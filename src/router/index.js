@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Product from '../views/Product.vue'
 import Lifecycle from '../views/Lifecycle.vue'
+import aboutProduct from '../views/About.vue'
+import userHome from '../views/user.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +23,16 @@ const routes = [
     path: '/lifecycle',
     name: 'Lifecycle',
     component: Lifecycle
+  },
+  {
+    path: '/aboutProduct/:id',
+    name: 'aboutProduct',
+    component: aboutProduct
+  },
+  {
+    path: '/userHome/',
+    name: 'userHome',
+    component: userHome
   }
 ]
 

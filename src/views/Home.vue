@@ -1,103 +1,176 @@
 <template>
-  <div class="home">
-    <!-- <b-container class="centered"> -->
-    <b-container>
-      <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
+  <div class="product">
+    <div class="centered">
       <Navbar />
-      <b-card>
-        <h5>Interpolation</h5>
-        <p>My name is {{ name }}</p>
-      </b-card>
-      <b-card>
-        <h5>Computed</h5>
-        <p>Original Message : {{ message }}</p>
-        <p>Reverse message : {{ reverseMessage }}</p>
-      </b-card>
-      <b-card>
-        <h5>Directiv</h5>
-      </b-card>
-      <ul>
-        <!-- <li v-for="(item,index) in dataProduct" :key="index">{{index}} - {{items.product_name}}</li>
-       <h5>{{item.product_name}}</h5>
-       <h3>{{item.product_price}}</h3> -->
-      </ul>
-      <b-card>
-        <h6>V-on</h6>
-        <button v-on:click="boom()">Click Me !</button>
-        <input type="text" v-model="seacrhData" v-on:keyup.enter="seacrh()" />
-        <h6>v_bind</h6>
-        <a v-blind:href="rule === 1 ? urlGoogle : urlYoutube">Clink google</a>
-      </b-card>
-      <b-card>
-        <h4>communication</h4>
-        <!-- <formInput
-          :dataProductName="product_name"
-          @changeProductName="product_name = $event"
-        /> -->
-        <formInput
-          :dataProductName="product_name"
-          @changeProductName="product_name = $event"
-        />
-        <!-- <input type="text" v-model="product_name" /> -->
-        <br />
-        <label>{{ product_name }}</label>
-      </b-card>
-    </b-container>
+      <b-container fluid>
+        <b-row class="sidebar">
+          <b-col xl="4" lg="4" md="12" sm="12">
+            <b-container class="voucher-container">
+              <center class="info-promo">Voucher For You</center>
+              <b-card-group deck v-for="(item, index) in product" :key="index">
+                <ul>
+                  <Voucher />
+                </ul>
+              </b-card-group>
+            </b-container>
+          </b-col>
+          <b-col xl="8" lg="8" md="12" sm="12">
+            <b-container class="bg-home">
+              <div>
+                <ul class="header-menu">
+                  <li>favorite Product</li>
+                  <li>coffee</li>
+                  <li>Non Coffee</li>
+                  <li>Foods</li>
+                  <li>Add On</li>
+                </ul>
+              </div>
+              <b-container class="bv-example-row">
+                <b-row>
+                  <div
+                    xl="3"
+                    lg="4"
+                    md="6"
+                    sm="12"
+                    class="card-product "
+                    v-for="(item, index) in product"
+                    :key="index"
+                  >
+                    <div class="card-1 mr-5">
+                      <img
+                        src="https://acegif.com/wp-content/uploads/spaghetti.gif"
+                        class="rounded-circle"
+                        width="125"
+                        height="100"
+                        alt="..."
+                        @click="productAbout(item)"
+                      />
+
+                      <p class="card-title">
+                        {{ item.product_name }}
+                      </p>
+                      <p class="card-text">
+                        <small class="text-muted"
+                          >Rp. {{ item.product_price }}</small
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </b-row>
+              </b-container>
+              <buttom class="add-product">ADD PRODUCT</buttom>
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="limit"
+                @change="handlePageChange"
+              ></b-pagination>
+            </b-container>
+          </b-col>
+        </b-row>
+        <Footer />
+      </b-container>
+    </div>
   </div>
 </template>
 
 <script>
 // [1] step pertama import komponen
 import Navbar from '../components/_base/Navbar'
-import formInput from '../components/_base/fromInput'
+import Footer from '../components/_base/Footer'
+import Voucher from '../components/_base/Voucher'
+import axios from 'axios'
+
 export default {
-  name: 'Home',
+  name: 'Product',
   // [2] step 2 mendaftarkan komponen yang sudah kita import
   components: {
     Navbar,
-    formInput
+    Footer,
+    Voucher
+  },
+  computed: {
+    rows() {
+      return this.totalRows
+    }
   },
   data() {
     return {
-      name: ' : Milla Aprillya Indriani',
-      message: 'Hello World',
-      rule: 2,
-      seacrhData: '',
-      dataProduct: [
-        {
-          product_name: 'Meja',
-          product_price: '5000'
-        },
-        {
-          product_name: 'buku',
-          product_price: '5000'
-        }
-      ],
-      urlGoogle: 'http://google.com',
-      urlYoutube: 'http://youtube.com',
-      product_name: 'spa'
+      product: [],
+      form: {
+        category_id: '',
+        product_name: '',
+        product_price: '',
+        product_size: '',
+        product_list: '',
+        product_status: ''
+      },
+      alert: false,
+      isMsg: '',
+      product_id: '',
+      currentPage: '1',
+      totalRows: 'null',
+      limit: 8,
+      page: 1
     }
   },
-  computed: {
-    reverseMessage: function() {
-      return this.message
-        .split(' ')
-        .reverse()
-        .join(' ')
-    }
+  created() {
+    this.getProduct()
   },
   methods: {
-    boom() {
-      console.log('Boom !')
-      alert('Boom !')
+    getProduct() {
+      axios
+        .get(
+          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
+        )
+        .then(response => {
+          console.log(response)
+          this.totalRows = response.data.pagination.totalData
+          this.product = response.data.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    postProduct() {
+      console.log(this.form)
+      axios
+        .post('http://localhost:3000/product', this.form)
+        .then(response => {
+          console.log(response)
+          this.alert = true
+          this.isMsg = response.data.msg
+          this.getProduct()
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+    },
+    //  pr
+    deleteProduct(product_id) {
+      console.log(product_id)
+    },
+    setProduct(data) {
+      console.log(data)
+
+      this.form = data
+      this.product_id = data.product_id
+    },
+    pacthProduct() {
+      console.log(this.form)
+    },
+    handlePageChange(numberPage) {
+      console.log(numberPage)
+      this.page = numberPage
+      this.getProduct()
+    },
+    productAbout(item) {
+      localStorage.setItem(JSON.stringify(item))
+      this.$router.push({
+        name: 'aboutProduct',
+        params: { id: item.product_id }
+      })
     }
-  },
-  seacrh() {
-    console.log('Process Seacrh')
-    console.log(this.seacrhData)
-  },
-  changeNameProduct(event) {
-    this.product_name = event
   }
 }
 </script>
@@ -105,5 +178,56 @@ export default {
 <style scoped>
 .centered {
   text-align: center;
+}
+.card-product {
+  width: 160px;
+  height: 300.5px;
+  margin: 4%;
+  padding: 2%;
+  background: #ffffff;
+  box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
+  border-radius: 150px;
+}
+.card-title {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #000000;
+  font-style: normal;
+  font-size: 20px;
+}
+.rounded-circle {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10%;
+}
+.card-title:hover {
+  color: brown;
+  font-weight: bold;
+  font-size: 20px;
+}
+.text-muted {
+  color: #6a4029;
+}
+.header-menu {
+  font-family: Poppins;
+}
+.info-promo {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 150%;
+  padding-bottom: 5%;
+  color: #6a4029;
+}
+.voucher-container {
+  border-right: black;
+}
+.add-product {
+  width: 729px;
+  height: 90px;
+
+  background: #6a4029;
+  border-radius: 20px;
 }
 </style>
