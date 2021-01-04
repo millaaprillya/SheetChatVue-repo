@@ -10,21 +10,21 @@
         :key="index"
       >
         <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
+          <img src="../../../assets/voucher/voucher1.png" alt="" />
           {{ item.voucher_name }}
         </b-card-text>
         <p>{{ item.voucher_list }}</p>
       </b-card>
       <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
         <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
+          <img src="../../../assets/voucher/voucher1.png" alt="" />
           VOUCHER DESEMBER
         </b-card-text>
         <p>Desember Ceria , ayo beli makanan max 50 %</p>
       </b-card>
       <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
         <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
+          <img src="../../../assets/voucher/voucher1.png" alt="" />
           VOUCHER DESEMBER
         </b-card-text>
         <p>Desember Ceria , ayo beli makanan max 50 %</p>
@@ -32,7 +32,7 @@
       <b-card img-src="" img-alt="Card image" img-left>
         <b-card-text>
           <img
-            src="../../assets/voucher/voucher1.png"
+            src="../../../assets/voucher/voucher1.png"
             alt=""
             class="card-voucher"
           />
@@ -46,7 +46,6 @@
           1. You can only apply 1 coupon per day 2. It only for dine in 3. Buy 1
           get 1 only for new user 4. Should make member card to apply coupon
         </ul>
-        <button class="add-voucher">ADD VOUCHER</button>
       </div>
     </div>
   </div>
@@ -135,11 +134,13 @@ export default {
 <style>
 .centered {
   text-align: center;
+  border-radius: 100px;
 }
 .card-voucher {
   margin-bottom: 5%;
 }
 .add-voucher {
+  margin-top: 40%;
   width: 300px;
   height: 70px;
   left: 156px;
@@ -158,7 +159,8 @@ export default {
   color: #6a4029;
 }
 .terms-voucher {
-  margin-top: 30%;
+  margin-top: 20%;
+  margin-bottom: 20%;
   font-family: Rubik;
   font-style: normal;
   font-weight: bold;

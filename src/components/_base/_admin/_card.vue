@@ -1,99 +1,49 @@
 <template>
-  <div class="product">
-    <div class="centered">
-      <Navbar />
-      <b-container fluid>
-        <b-row clas s="sidebar">
-          <b-col xl="4" lg="4" md="12" sm="12" class="voucher-container">
-            <b-container>
-              <b-card-group class="border-class">
-                <center>
-                  <ul>
-                    <center class="info-promo">Voucher For You</center>
-                    <Voucher />
-                  </ul>
-                </center>
-              </b-card-group>
-            </b-container>
-          </b-col>
-          <b-col xl="8" lg="8" md="12" sm="12">
-            <b-container class="bg-home">
-              <div>
-                <ul class="header-menu">
-                  <li>favorite Product</li>
-                  <li>coffee</li>
-                  <li>Non Coffee</li>
-                  <li>Foods</li>
-                  <li>Add On</li>
-                </ul>
-              </div>
-              <b-container class="bv-example-row">
-                <b-row>
-                  <div
-                    xl="3"
-                    lg="4"
-                    md="6"
-                    sm="12"
-                    class="card-product "
-                    v-for="(item, index) in product"
-                    :key="index"
-                  >
-                    <div class="card-1 mr-5">
-                      <img
-                        src="https://acegif.com/wp-content/uploads/spaghetti.gif"
-                        class="rounded-circle"
-                        width="125"
-                        height="100"
-                        alt="..."
-                      />
+  <b-row class="mr-card">
+    <b-container class="bv-example-row">
+      <b-row>
+        <div
+          xl="3"
+          lg="4"
+          md="6"
+          sm="12"
+          class="card-product "
+          v-for="(item, index) in product"
+          :key="index"
+        >
+          <div class="card-1 mr-5">
+            <img
+              src="https://acegif.com/wp-content/uploads/spaghetti.gif"
+              class="rounded-circle"
+              width="125"
+              height="100"
+              alt="..."
+            />
 
-                      <p class="card-title">
-                        {{ item.product_name }}
-                      </p>
-                      <p class="card-text">
-                        <small class="text-muted"
-                          >Rp. {{ item.product_price }}</small
-                        >
-                      </p>
-                      <button class="edit-data" @click="productOrder(item)">
-                        + Add
-                      </button>
-                    </div>
-                  </div>
-                </b-row>
-              </b-container>
-
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="limit"
-                @change="handlePageChange"
-                class="pagination"
-              ></b-pagination>
-            </b-container>
-          </b-col>
-        </b-row>
-        <Footer />
-      </b-container>
-    </div>
-  </div>
+            <p class="card-title">
+              {{ item.product_name }}
+            </p>
+            <p class="card-text">
+              <small class="text-muted">Rp. {{ item.product_price }}</small>
+            </p>
+            <button class="edit-data" @click="productAbout(item)">
+              Edit
+            </button>
+            <button class="edit-delete" @click="deleteProduct(item)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </b-row>
+    </b-container>
+  </b-row>
 </template>
 
 <script>
-// [1] step pertama import komponen
-import Navbar from '../components/_base/Navbar'
-import Footer from '../components/_base/Footer'
-import Voucher from '../components/_base/_user/Voucher-user'
 import axios from 'axios'
-
 export default {
   name: 'Product',
-  // [2] step 2 mendaftarkan komponen yang sudah kita import
-  components: {
-    Navbar,
-    Footer,
-    Voucher
-  },
+
   computed: {
     rows() {
       return this.totalRows
@@ -115,7 +65,7 @@ export default {
       product_id: '',
       currentPage: '1',
       totalRows: 'null',
-      limit: 8,
+      limit: 20,
       page: 1
     }
   },
@@ -179,14 +129,19 @@ export default {
       this.page = numberPage
       this.getProduct()
     },
-    productOrder(data) {
+    productAbout(data) {
       console.log(data)
       this.form = data
       this.$router.push({
-        name: 'orderDetail',
+        name: 'aboutProduct',
         params: { id: data.product_id }
       })
     }
+  },
+  addProductform() {
+    this.$router.push({
+      name: 'addProduct'
+    })
   }
 }
 </script>

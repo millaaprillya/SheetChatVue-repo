@@ -6,39 +6,35 @@
       >
       <b-col xl="6" lg="4" md="12" sm="12">
         <ul class="header-menu">
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/product">Product</router-link></li>
-          <li>Your Cart</li>
-          <li>History</li>
-          <!-- <li><router-link to="/lifecycle">Lifecycle</router-link></li> -->
+          <li sm="12"><router-link to="/">Home</router-link></li>
+          <li sm="12"><router-link to="/product">Product</router-link></li>
+          <li sm="12">Your Cart</li>
+          <li sm="12">History</li>
         </ul></b-col
       >
-      <b-col xl="2" lg="4" md="12" sm="12">
-        <form class="form-inline ">
-          <input
-            class="form-control "
-            type="text"
-            placeholder="Search"
-            aria-label="Search"
-          />
+      <b-col xl="2" lg="4" md="12" sm="12" class="sc">
+        <form class="form-inline" xl="2" lg="12" md="12" sm="12">
+          <router-link to="/product">
+            <input
+              class="form-control "
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </router-link>
         </form>
       </b-col>
-      <b-col xl="2" lg="4" md="12" sm="12">
+      <b-col xl="2" lg="12" md="12" sm="12" class="user">
         <img
           mr="5"
           src="../../assets/nav/user.png"
           alt=""
           class="rounded-circle"
         />
+        <button @click="handleLogout">Logout</button>
       </b-col>
     </b-row>
   </b-container>
-
-  <!-- <div>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/product">Product</router-link> |
-    <router-link to="/lifecycle">Lifecycle</router-link>
-  </div> -->
 </template>
 
 <style>
@@ -47,16 +43,16 @@
   padding: 20px 20px 20px 20px;
 
   box-sizing: border-box;
-  border: opx solid;
+  border-left: opx solid;
   padding: 10px;
-  box-shadow: 0px 7px 5px #f7f7f7;
+  box-shadow: 10px 10px 10px #f7f7f7;
 }
 .CoffeShop {
   font-family: 'Kalam', cursive;
   font-size: 160%;
-  text-align: right;
 }
 .header-menu li {
+  font-family: 'Kalam', cursive;
   display: inline-block;
   padding-right: 0.9rem;
   padding-left: 0.9rem;
@@ -71,8 +67,23 @@
   border-radius: 50%;
   border-color: yellowgreen;
 }
+@media only screen and (max-width: 1111px) {
+  .sc {
+    display: none;
+    flex: 1;
+  }
+}
 </style>
 
 <script>
-export default {}
+import { mapActions } from 'vuex'
+export default {
+  name: 'Navbar',
+  methods: {
+    ...mapActions(['logout']),
+    handleLogout() {
+      console.log('anda berasil login').this.logout()
+    }
+  }
+}
 </script>
