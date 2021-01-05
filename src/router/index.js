@@ -9,11 +9,18 @@ import orderDetail from '../views/detailOrder.vue'
 import login from '../views/auth/login.vue'
 import register from '../views/auth/register.vue'
 import user from '../views/auth/user.vue'
+import dashboard from '../views/dasboard/dashboard.vue'
+import payment from '../views/admin/payment'
 import addProduct from '../components/_base/_admin/Addproduct.vue'
 import store from '../store/index'
 
 Vue.use(VueRouter)
 const routes = [
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: dashboard
+  },
   {
     path: '/',
     name: 'Home',
@@ -30,6 +37,11 @@ const routes = [
     path: '/aboutProduct/:id',
     name: 'aboutProduct',
     component: aboutProduct
+  },
+  {
+    path: '/payment/:id',
+    name: 'payment',
+    component: payment
   },
   {
     path: '/userHome/',

@@ -175,8 +175,7 @@ export default {
       console.log(this.form)
     },
     handlePageChange(numberPage) {
-      console.log(numberPage)
-      this.page = numberPage
+      this.changePage(numberPage)
       this.getProduct()
     },
     productOrder(data) {

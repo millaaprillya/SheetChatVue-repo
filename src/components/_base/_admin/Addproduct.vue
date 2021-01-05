@@ -7,6 +7,7 @@
             <b-container class="bv-example-row">
               <form>
                 <b-alert :show="alert">{{ isMsg }}</b-alert>
+                <input type="file" @change="handleFile" />
                 <input
                   type="text"
                   v-model="form.category_id"
@@ -70,6 +71,7 @@ export default {
       form: {
         category_id: '',
         product_name: '',
+        product_image: '',
         product_price: '',
         product_size: '',
         product_list: '',
@@ -104,17 +106,37 @@ export default {
     },
     postProduct() {
       console.log(this.form)
-      axios
-        .post('http://localhost:3000/product', this.form)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+      const {
+        product_name,
+        product_image,
+        product_price,
+        product_size,
+        product_list,
+        product_status
+      } = this.form
+      const data = new FormData()
+
+      data.append('product_name', product_name)
+      data.append('product_image', product_image)
+      data.append('product_price', product_price)
+      data.append('product_size', product_size)
+      data.append('product_list', product_list)
+      data.append('product_status', product_status)
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      // axios
+      //   .post('http://localhost:3000/product', this.form)
+      //   .then(response => {
+      //     console.log(response)
+      //     this.alert = true
+      //     this.isMsg = response.data.msg
+      //     this.getProduct()
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response)
+      //   })
     },
     //  pr
     deleteProduct(product_id) {
@@ -142,6 +164,10 @@ export default {
       this.page = numberPage
       this.getProduct()
     }
+  },
+  handleFile(event) {
+    console.log(event)
+    this.form.product_image = event.target.file.index[0]
   }
 }
 </script>

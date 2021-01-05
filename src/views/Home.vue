@@ -19,7 +19,7 @@
           <b-col xl="8" lg="8" md="12" sm="12">
             <b-container class="bg-home">
               <div>
-                <ul class="header-menu-li">
+                <ul class="header-menu">
                   <li>favorite Product</li>
                   <li>coffee</li>
                   <li>Non Coffee</li>
@@ -68,6 +68,8 @@ import Card from '../components/_base/_admin/_card'
 import Addproduct from '../components/_base/_admin/Addproduct'
 import axios from 'axios'
 
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+
 export default {
   name: 'Product',
   // [2] step 2 mendaftarkan komponen yang sudah kita import
@@ -79,9 +81,16 @@ export default {
     Card
   },
   computed: {
-    rows() {
-      return this.totalRows
-    }
+    ...mapGetters({
+      products: 'getDataProduct',
+      page: 'getPageProduct',
+      limit: 'getLimitProduct',
+      rows: 'getTotalRowsProduct'
+    }),
+    // rows() {
+    //   return this.totalRows
+    // },
+    ...mapGetters({ user: 'setUser' })
   },
   data() {
     return {
@@ -97,30 +106,32 @@ export default {
       alert: false,
       isMsg: '',
       product_id: '',
-      currentPage: '1',
-      totalRows: 'null',
-      limit: 8,
-      page: 1
+      currentPage: '1'
+      // totalRows: 'null',
+      // limit: 8,
+      // page: 1
     }
   },
   created() {
-    this.getProduct()
+    // this.getProducts()
   },
   methods: {
-    getProduct() {
-      axios
-        .get(
-          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
-        )
-        .then(response => {
-          console.log(response)
-          this.totalRows = response.data.pagination.totalData
-          this.product = response.data.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+    ...mapActions(['getProducts']),
+    ...mapMutations(['changePage']),
+    // getProduct() {
+    //   // axios
+    //   //   .get(
+    //   //     `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
+    //   //   )
+    //   //   .then(response => {
+    //   //     console.log(response)
+    //   //     this.totalRows = response.data.pagination.totalData
+    //   //     this.product = response.data.data
+    //   //   })
+    //   //   .catch(error => {
+    //   //     console.log(error)
+    //   //   })
+    // },
     postProduct() {
       console.log(this.form)
       axios
@@ -159,9 +170,10 @@ export default {
       console.log(this.form)
     },
     handlePageChange(numberPage) {
-      console.log(numberPage)
-      this.page = numberPage
-      this.getProduct()
+      this.changePage(numberPage)
+      // console.log(numberPage)
+      // this.page = numberPage
+      this.getProducts()
     },
     productAbout(data) {
       console.log(data)
@@ -220,7 +232,7 @@ export default {
 .text-muted {
   color: #6a4029;
 }
-.header-menu-li li {
+.header-menu li {
   margin-left: 5%;
   font-family: Poppins;
 }

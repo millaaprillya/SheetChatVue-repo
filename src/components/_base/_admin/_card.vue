@@ -8,12 +8,13 @@
           md="6"
           sm="12"
           class="card-product "
-          v-for="(item, index) in product"
+          v-for="(item, index) in products"
           :key="index"
         >
           <div class="card-1 mr-5">
             <img
-              src="https://acegif.com/wp-content/uploads/spaghetti.gif"
+              v-bind:title="item.product_name"
+              :img-src="'http://Localhost:3000/' + item.product_image"
               class="rounded-circle"
               width="125"
               height="100"
@@ -41,17 +42,21 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Product',
 
   computed: {
-    rows() {
-      return this.totalRows
-    }
+    // rows() {
+    //   return this.totalRows
+    // },
+    ...mapGetters({
+      products: 'getDataProduct'
+    })
   },
   data() {
     return {
-      product: [],
+      // product: [],
       form: {
         category_id: '',
         product_name: '',
@@ -62,31 +67,14 @@ export default {
       },
       alert: false,
       isMsg: '',
-      product_id: '',
-      currentPage: '1',
-      totalRows: 'null',
-      limit: 20,
-      page: 1
+      product_id: ''
     }
   },
   created() {
-    this.getProduct()
+    this.getProducts()
   },
   methods: {
-    getProduct() {
-      axios
-        .get(
-          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
-        )
-        .then(response => {
-          console.log(response)
-          this.totalRows = response.data.pagination.totalData
-          this.product = response.data.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+    ...mapActions(['getProducts']),
     postProduct() {
       console.log(this.form)
       axios

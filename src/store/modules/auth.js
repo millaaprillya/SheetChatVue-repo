@@ -27,7 +27,7 @@ export default {
           .post('http://localhost:3000/user/login', payload)
           .then(result => {
             // console.log(result)
-            context.commit('seUser', result.data.data)
+            context.commit('setUser', result.data.data)
             localStorage.setItem('token', result.data.data.token)
             resolve(result)
           })
@@ -84,6 +84,9 @@ export default {
     }
   },
   getters: {
+    setUser(state) {
+      return state.user
+    },
     isLogin(state) {
       return state.token !== null
     }

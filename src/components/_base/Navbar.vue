@@ -43,10 +43,11 @@
   padding: 20px 20px 20px 20px;
 
   box-sizing: border-box;
-  border-left: opx solid;
+  border-left: solid;
   padding: 10px;
   box-shadow: 10px 10px 10px #f7f7f7;
 }
+
 .CoffeShop {
   font-family: 'Kalam', cursive;
   font-size: 160%;
