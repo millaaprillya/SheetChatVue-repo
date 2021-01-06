@@ -1,52 +1,26 @@
 <template>
   <div class="voucher">
-    <div class="centered">
-      <b-card
-        img-src=""
-        img-alt="Card image"
-        img-left
-        class="card-voucher"
-        v-for="(item, index) in voucher"
-        :key="index"
-      >
-        <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
-          {{ item.voucher_name }}
-        </b-card-text>
-        <p>{{ item.voucher_list }}</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
-        <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
-        <b-card-text>
-          <img src="../../assets/voucher/voucher1.png" alt="" />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left>
-        <b-card-text>
-          <img
-            src="../../assets/voucher/voucher1.png"
-            alt=""
-            class="card-voucher"
-          />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <div class="terms-voucher">
-        Terms and Condition
-        <ul>
-          1. You can only apply 1 coupon per day 2. It only for dine in 3. Buy 1
-          get 1 only for new user 4. Should make member card to apply coupon
-        </ul>
-        <button class="add-voucher">ADD VOUCHER</button>
+    <div class="coupon">
+      <div class="containerr">
+        <h3>VOUCHER</h3>
+      </div>
+      <img
+        src="https://media0.giphy.com/media/3o7TKBTR9Lu1qqCGg8/giphy.gif"
+        alt="Avatar"
+        style="width:100%;"
+      />
+      <div class="container" style="background-color:white">
+        <h2><b>20% OFF YOUR PURCHASE</b></h2>
+        <p>
+          Lorem ipsum dolor sit amet, et nam pertinax gloriatur. Sea te minim
+          soleat senserit, ex quo luptatum tacimates voluptatum, salutandi
+          delicatissimi eam ea. In sed nullam laboramus appellantur, mei ei
+          omnis dolorem mnesarchum.
+        </p>
+      </div>
+      <div class="container">
+        <p>Use Promo Code: <span class="promo">BOH232</span></p>
+        <p class="expire">Expires: Jan 03, 2021</p>
       </div>
     </div>
   </div>
@@ -133,13 +107,40 @@ export default {
 </script>
 
 <style>
+.body {
+  font-family: Arial;
+}
+
+.coupon {
+  border: 5px dotted #bbb;
+  width: 80%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.containerr {
+  padding: 2px 16px;
+  background-color: #f1f1f1;
+}
+
+.promo {
+  background: #ccc;
+  padding: 3px;
+}
+
+.expire {
+  color: red;
+}
 .centered {
   text-align: center;
+  border-radius: 100px;
 }
 .card-voucher {
   margin-bottom: 5%;
 }
 .add-voucher {
+  margin-top: 40%;
   width: 300px;
   height: 70px;
   left: 156px;
@@ -158,7 +159,8 @@ export default {
   color: #6a4029;
 }
 .terms-voucher {
-  margin-top: 30%;
+  margin-top: 20%;
+  margin-bottom: 20%;
   font-family: Rubik;
   font-style: normal;
   font-weight: bold;

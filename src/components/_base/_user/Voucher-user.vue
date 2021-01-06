@@ -1,53 +1,39 @@
 <template>
   <div class="voucher">
-    <div class="centered">
-      <b-card
-        img-src=""
-        img-alt="Card image"
-        img-left
-        class="card-voucher"
-        v-for="(item, index) in voucher"
-        :key="index"
-      >
-        <b-card-text>
-          <img src="../../../assets/voucher/voucher1.png" alt="" />
-          {{ item.voucher_name }}
-        </b-card-text>
-        <p>{{ item.voucher_list }}</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
-        <b-card-text>
-          <img src="../../../assets/voucher/voucher1.png" alt="" />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left class="card-voucher">
-        <b-card-text>
-          <img src="../../../assets/voucher/voucher1.png" alt="" />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <b-card img-src="" img-alt="Card image" img-left>
-        <b-card-text>
-          <img
-            src="../../../assets/voucher/voucher1.png"
-            alt=""
-            class="card-voucher"
-          />
-          VOUCHER DESEMBER
-        </b-card-text>
-        <p>Desember Ceria , ayo beli makanan max 50 %</p>
-      </b-card>
-      <div class="terms-voucher">
-        Terms and Condition
-        <ul>
-          1. You can only apply 1 coupon per day 2. It only for dine in 3. Buy 1
-          get 1 only for new user 4. Should make member card to apply coupon
-        </ul>
+    <!-- <div class="coupon" v-for="(item, index) in voucher" :key="index"> -->
+    <div class="coupon">
+      <div class="containerr">
+        <h3>VOUCHER</h3>
+      </div>
+      <img
+        src="https://media0.giphy.com/media/3o7TKBTR9Lu1qqCGg8/giphy.gif"
+        alt="Avatar"
+        style="width:100%;"
+      />
+      <div class="container" style="background-color:white">
+        <h2></h2>
+        <p>
+          Lorem ipsum dolor sit amet, et nam pertinax gloriatur. Sea te minim
+          soleat senserit, ex quo luptatum tacimates voluptatum, salutandi
+          delicatissimi eam ea. In sed nullam laboramus appellantur, mei ei
+          omnis dolorem mnesarchum.
+        </p>
+      </div>
+      <div class="container">
+        <p>Use Promo Code: <span class="promo">BOH232</span></p>
+        <p class="expire">Expires: Jan 03, 2021</p>
       </div>
     </div>
+    <ul class="info-1">
+      Terms and Condition
+      <p>
+        1. You can only apply 1 coupon per day 3. Buy 1 get 1 only for new user
+        4. Should make member card to apply coupon
+      </p>
+    </ul>
+    <button type="" class="add-voucher">
+      ADD VOUCHER
+    </button>
   </div>
 </template>
 
@@ -132,6 +118,63 @@ export default {
 </script>
 
 <style>
+.add-voucher {
+  color: #ffffff;
+
+  border-radius: 20px;
+  width: 370px;
+  height: 60px;
+  text-align: center;
+}
+.add-voucher {
+  background: #ffba33;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 22px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #6a4029;
+}
+.info-1 {
+  text-align: center;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 30px;
+  /* identical to box height, or 187% */
+
+  color: #4f5665;
+}
+.body {
+  font-family: Arial;
+}
+
+.coupon {
+  border: 5px dotted #bbb;
+  width: 80%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.containerr {
+  padding: 2px 16px;
+  background-color: #f1f1f1;
+}
+
+.promo {
+  background: #ccc;
+  padding: 3px;
+}
+
+.expire {
+  color: red;
+}
 .centered {
   text-align: center;
   border-radius: 100px;
@@ -140,7 +183,6 @@ export default {
   margin-bottom: 5%;
 }
 .add-voucher {
-  margin-top: 40%;
   width: 300px;
   height: 70px;
   left: 156px;

@@ -11,7 +11,7 @@
               </div>
             </b-col>
             <b-col class="register">
-              <b-button variant="warning">LOGIN</b-button>
+              <b-button variant="warning" @click="loginUser()">LOGIN</b-button>
             </b-col>
           </b-row>
           <b-col class="login">
@@ -41,7 +41,7 @@
               <div class="button-login">
                 <b-col
                   ><button type="buttom" class="login-buttom">
-                    Login
+                    REGISTER
                   </button></b-col
                 >
                 <br />
@@ -99,6 +99,11 @@ export default {
         user_email: '',
         user_password: ''
       }
+    },
+    loginUser() {
+      this.$router.push({
+        name: 'login'
+      })
     }
   }
 }

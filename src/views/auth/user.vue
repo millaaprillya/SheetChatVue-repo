@@ -1,60 +1,59 @@
 <template>
   <div>
     <Navbar />
-    <b-container fluid>
-      <b-col class="bg-user">
-        <b-col class="txt-user-profile"> <p>USER PROFILE</p></b-col>
-        <b-container class="card">
-          <b-row>
-            <b-col>
-              <div class="colum-user-1 ">
-                <div class="image-view-user">
-                  <center>
-                    <img
-                      src="../../assets/nav/image 39.png"
-                      class="rounded-circle"
-                    />
-                  </center>
-                </div>
-                <div class="button-set-profile">
-                  <button class="set-photo ">Choose photo</button><br />
-                  <button class="remote-photo ">Remove photo</button><br />
-                  <button class="set-password ">Set Password</button>
-                  <p class="title-doyouwanna ">
-                    Do you want to save the change?
-                  </p>
-                  <button class="save-user ">Save Changes</button><br />
-                  <button class="cancel-user ">Cancel</button>
 
-                  <button class="logout ">LOGOUT</button>
-                </div>
-              </div></b-col
-            >
-            <b-col>
-              <b-container class="card-contact">
-                <p class="contact">CONTACT</p>
-                <p></p>
-                <form>
-                  <label for="fname" class="contact-1">Email adress:</label
-                  ><br />
-                  <input type="text" /><br />
-                  <label for="lname" class="contact-1">Delivery adress:</label
-                  ><br />
-                  <input type="text" /><br /><br />
+    <b-container fluid class="bg-user">
+      <b-col class="txt-user-profile"> <p>USER PROFILE</p></b-col>
+      <b-container class="card">
+        <b-row>
+          <b-col>
+            <div class="colum-user-1 ">
+              <div class="image-view-user">
+                <center>
+                  <img
+                    src="../../assets/nav/image 39.png"
+                    class="rounded-circle"
+                  />
+                </center>
+              </div>
+              <div class="button-set-profile">
+                <button class="set-photo ">Choose photo</button><br />
+                <button class="remote-photo ">Remove photo</button><br />
+                <button class="set-password ">Set Password</button>
+                <p class="title-doyouwanna ">
+                  Do you want to save the change?
+                </p>
+                <button class="save-user ">Save Changes</button><br />
+                <button class="cancel-user ">Cancel</button>
 
-                  <p class="contact">Details</p>
-                  <label for="fname" class="contact-1">Display name :</label
-                  ><br />
-                  <input type="text" /><br />
-                  <label for="lname" class="contact-1">First Name:</label><br />
-                  <input type="text" /><br /><br />
-                  <label for="lname" class="contact-1">Last Name:</label><br />
-                  <input type="text" /><br /><br /></form
-              ></b-container>
-            </b-col>
-          </b-row>
-        </b-container>
-      </b-col>
+                <button class="logout ">LOGOUT</button>
+              </div>
+            </div></b-col
+          >
+          <b-col>
+            <b-container class="card-contact">
+              <p class="contact">CONTACT</p>
+              <p></p>
+              <form>
+                <label for="fname" class="contact-1">Email adress:</label><br />
+                <input type="text" /><br />
+                <label for="lname" class="contact-1">Delivery adress:</label
+                ><br />
+                <input type="text" /><br /><br />
+
+                <p class="contact">Details</p>
+                <label for="fname" class="contact-1">Display name :</label
+                ><br />
+                <input type="text" /><br />
+                <label for="lname" class="contact-1">First Name:</label><br />
+                <input type="text" /><br /><br />
+                <label for="lname" class="contact-1">Last Name:</label><br />
+                <input type="text" /><br /><br /></form
+            ></b-container>
+          </b-col>
+        </b-row>
+      </b-container>
+      <br />
     </b-container>
     <Footer />
   </div>
@@ -79,12 +78,12 @@ export default {
   background: url('../../assets/bg/bg-user-edit.png');
 }
 .card {
-  background: grey;
+  background: white;
   border-radius: 20px;
 }
 .card-contact {
   margin-top: 5%;
-  background: white;
+  background: #f8f8f8;
 }
 .button-set-profile {
   margin-left: 8%;

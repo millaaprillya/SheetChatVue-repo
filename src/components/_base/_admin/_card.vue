@@ -14,25 +14,32 @@
           <div class="card-1 mr-5">
             <img
               v-bind:title="item.product_name"
-              :img-src="'http://Localhost:3000/' + item.product_image"
+              :src="'http://localhost:3000/' + item.product_image"
               class="rounded-circle"
               width="125"
-              height="100"
+              height="125"
               alt="..."
             />
-
-            <p class="card-title">
+            <b-col class="card-title">
               {{ item.product_name }}
-            </p>
-            <p class="card-text">
-              <small class="text-muted">Rp. {{ item.product_price }}</small>
-            </p>
-            <button class="edit-data" @click="productAbout(item)">
-              Edit
-            </button>
-            <button class="edit-delete" @click="deleteProduct(item)">
-              Delete
-            </button>
+            </b-col>
+            <b-col>
+              <p class="card-text">Rp.{{ item.product_price }}</p>
+            </b-col>
+            <b-container class="bv-example-row mb-3">
+              <b-row cols="2">
+                <b-col>
+                  <button class="button button5" @click="productAbout(item)">
+                    <img src="../../../assets/property/Vector.png" alt="" />
+                  </button>
+                </b-col>
+                <b-col>
+                  <button class="button button5" @click="deleteProduct(item)">
+                    D
+                  </button>
+                </b-col>
+              </b-row>
+            </b-container>
           </div>
         </div>
       </b-row>
@@ -60,6 +67,7 @@ export default {
       form: {
         category_id: '',
         product_name: '',
+        product_image: '',
         product_price: '',
         product_size: '',
         product_list: '',
@@ -77,17 +85,38 @@ export default {
     ...mapActions(['getProducts']),
     postProduct() {
       console.log(this.form)
-      axios
-        .post('http://localhost:3000/product', this.form)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+      const {
+        category_id,
+        product_name,
+        product_image,
+        product_price,
+        product_size,
+        product_list,
+        product_status
+      } = this.form
+      const data = new FormData()
+      data.append('category_id', category_id)
+      data.append('product_name', product_name)
+      data.append('product_image', product_image)
+      data.append('product_price', product_price)
+      data.append(' product_size', product_size)
+      data.append(' product_list', product_list)
+      data.append('product_status', product_status)
+      // untuk pengecekan saja
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      // axios
+      //   .post('http://localhost:3000/product', data)
+      //   .then(response => {
+      //     console.log(response)
+      //     this.alert = true
+      //     this.isMsg = response.data.msg
+      //     // this.getProduct()
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response)
+      //   })
     },
     //  pr
     deleteProduct(item) {
@@ -126,6 +155,10 @@ export default {
       })
     }
   },
+  handleFile(event) {
+    console.log(event)
+    this.form.product_image = event.target.files[0]
+  },
   addProductform() {
     this.$router.push({
       name: 'addProduct'
@@ -152,13 +185,16 @@ export default {
   border-radius: 150px;
 }
 .card-title {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  text-align: center;
-  color: #000000;
+  font-family: Poppins;
   font-style: normal;
-  font-size: 20px;
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 101.34%;
+  /* or 22px */
+
+  text-align: center;
+
+  color: #000000;
 }
 .rounded-circle {
   display: block;
@@ -171,7 +207,14 @@ export default {
   font-weight: bold;
   font-size: 20px;
 }
-.text-muted {
+.card-text {
+  color: #6a4029;
+  font-size: 20px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  text-align: center;
+
   color: #6a4029;
 }
 .header-menu {
@@ -213,6 +256,25 @@ export default {
 }
 .pagination {
   margin-top: 5%;
+}
+.button5 {
+  border-radius: 50%;
+}
+.button4 {
+  border-radius: 50%;
+}
+.button {
+  margin-top: 5px;
+  background-color: #6a4029; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
 @media only screen and (max-width: 1094px) {
   .voucher-container {

@@ -10,6 +10,9 @@
                 <center>
                   <ul>
                     <center class="info-promo">Voucher For You</center>
+                    <center class="info-promo-1">
+                      Coupons will be updated every weeks. Check them out!
+                    </center>
                     <Voucher />
                   </ul>
                 </center>
@@ -25,14 +28,38 @@
                   <li>Non Coffee</li>
                   <li>Foods</li>
                   <li>Add On</li>
+                  <li>
+                    <b-dropdown
+                      id="dropdown-dropright"
+                      dropright
+                      text="For You"
+                      pill
+                      variant="outline-secondary"
+                    >
+                      <b-dropdown-item href="#">Harga Terendah</b-dropdown-item>
+                      <b-dropdown-item href="#"
+                        >Harga Tertinggi</b-dropdown-item
+                      >
+                      <b-dropdown-item href="#">Promo</b-dropdown-item>
+                    </b-dropdown>
+                  </li>
                 </ul>
+                <form class="form-inline" xl="2" lg="12" md="12" sm="12">
+                  <router-link to="/">
+                    <input
+                      type="text"
+                      placeholder=" Search"
+                      aria-label="Search"
+                    />
+                  </router-link>
+                </form>
               </div>
               <b-container class="bv-example-row">
                 <Card />
                 <div>
                   <div>
                     <div>
-                      <b-button v-b-modal.modal-xl variant="primary"
+                      <b-button v-b-modal.modal-xl squared variant="warning"
                         >ADD PRODUCT</b-button
                       >
                       <b-modal id="modal-xl" size="xl" title="ADD DATA PRODUCT"
@@ -98,6 +125,7 @@ export default {
       form: {
         category_id: '',
         product_name: '',
+        product_image: '',
         product_price: '',
         product_size: '',
         product_list: '',
@@ -235,19 +263,42 @@ export default {
 .header-menu li {
   margin-left: 5%;
   font-family: Poppins;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
 }
 .info-promo {
-  margin: 10%;
+  margin: 3%;
   margin-left: 10%;
 
   font-family: 'Source Serif Pro', serif;
-  font-size: 150%;
-  padding-bottom: 5%;
+
+  padding-bottom: 4%;
+  color: #6a4029;
+  font-family: Rubik;
+
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
   color: #6a4029;
 }
+.info-promo-1 {
+  margin: 5%;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 18px;
+  text-align: center;
+
+  color: #000000;
+}
 .voucher-container {
-  border-right: #f7f7f7;
-  border-right: 1px solid;
+  border-right: 5px solid #f7f7f7;
   padding: 0px;
   box-shadow: 0px 5px 5px #f7f7f7;
 }

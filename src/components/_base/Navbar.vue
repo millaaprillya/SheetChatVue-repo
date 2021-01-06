@@ -1,5 +1,6 @@
 <template>
   <b-container fluid class="bv-example-row">
+    <b-col lg="12" class="navbar-top">... </b-col>
     <b-row class="nav-admin">
       <b-col xl="2" lg="4" md="12" sm="12" class="CoffeShop">
         <img src="../../assets/logo.png" alt="" /> CoffeShopKu</b-col
@@ -12,39 +13,41 @@
           <li sm="12">History</li>
         </ul></b-col
       >
-      <b-col xl="2" lg="4" md="12" sm="12" class="sc">
-        <form class="form-inline" xl="2" lg="12" md="12" sm="12">
-          <router-link to="/product">
-            <input
-              class="form-control "
-              type="text"
-              placeholder="Search"
-              aria-label="Search"
-            />
-          </router-link>
-        </form>
-      </b-col>
+      <b-col xl="2" lg="4" md="12" sm="12" class="sc"> </b-col>
       <b-col xl="2" lg="12" md="12" sm="12" class="user">
-        <img
-          mr="5"
-          src="../../assets/nav/user.png"
-          alt=""
-          class="rounded-circle"
-        />
-        <button @click="handleLogout">Logout</button>
+        <b-container class="bv-example-row">
+          <b-row>
+            <b-col>
+              <img src="../../assets/property/chat (1) 1.png" alt=""
+            /></b-col>
+            <b-col>
+              <img
+                mr="5"
+                src="../../assets/nav/user.png"
+                alt=""
+                class="rounded-circle"
+            /></b-col>
+            <b-col>
+              <img
+                src="../../assets/property/logout.png"
+                alt=""
+                @click="handleLogout"
+            /></b-col>
+          </b-row>
+        </b-container>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <style>
+.navbar-top {
+  background: url('../../assets/nav/Capture.png');
+}
 .nav-admin {
-  margin: 2%;
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px;
 
   box-sizing: border-box;
-  border-left: solid;
-  padding: 10px;
   box-shadow: 10px 10px 10px #f7f7f7;
 }
 
