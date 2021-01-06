@@ -120,7 +120,7 @@
                 >
                 <br />
                 <br />
-                <button type="" class="save-product">
+                <button tye="" class="save-product">
                   Save Product
                 </button>
               </form></b-container
@@ -135,7 +135,121 @@
 </template>
 
 <script>
-export default {}
+import axios from 'axios'
+export default {
+  name: 'Product',
+
+  components: {},
+  computed: {
+    rows() {
+      return this.totalRows
+    }
+  },
+  data() {
+    return {
+      product: [],
+      form: {
+        category_id: '',
+        product_name: '',
+        product_image: '',
+        product_price: '',
+        product_size: '',
+        product_list: '',
+        product_status: ''
+      },
+      alert: false,
+      isMsg: '',
+      product_id: '',
+      currentPage: '1',
+      totalRows: 'null',
+      limit: 8,
+      page: 1
+    }
+  },
+  created() {
+    this.getProduct()
+  },
+  methods: {
+    getProduct() {
+      axios
+        .get(
+          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
+        )
+        .then(response => {
+          console.log(response)
+          this.totalRows = response.data.pagination.totalData
+          this.product = response.data.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    postProduct() {
+      console.log(this.form)
+      const {
+        product_name,
+        product_image,
+        product_price,
+        product_size,
+        product_list,
+        product_status
+      } = this.form
+      const data = new FormData()
+
+      data.append('product_name', product_name)
+      data.append('product_image', product_image)
+      data.append('product_price', product_price)
+      data.append('product_size', product_size)
+      data.append('product_list', product_list)
+      data.append('product_status', product_status)
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      // axios
+      //   .post('http://localhost:3000/product', this.form)
+      //   .then(response => {
+      //     console.log(response)
+      //     this.alert = true
+      //     this.isMsg = response.data.msg
+      //     this.getProduct()
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response)
+      //   })
+    },
+    //  pr
+    deleteProduct(product_id) {
+      console.log(product_id)
+    },
+    setProduct(data) {
+      console.log(data)
+      // console.log(this.product_id)
+      // this.form = {
+      //   category_id: 'data.category_id',
+      //   product_name: 'data.product_name',
+      //   product_price: 'data.product_price',
+      //   product_size: 'data.product_size',
+      //   product_list: 'product_list',
+      //   product_status: 'product_status'
+      // }
+      this.form = data
+      this.product_id = data.product_id
+    },
+    pacthProduct() {
+      console.log(this.form)
+    },
+    handlePageChange(numberPage) {
+      console.log(numberPage)
+      this.page = numberPage
+      this.getProduct()
+    }
+  },
+  handleFile(event) {
+    console.log(event)
+    this.form.product_image = event.target.file.index[0]
+  }
+}
 </script>
 
 <style scoped>
