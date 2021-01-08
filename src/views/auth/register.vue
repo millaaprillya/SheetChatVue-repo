@@ -52,7 +52,7 @@
               <div class="button-login">
                 <b-col
                   ><button
-                    type="buttom"
+                    type="submit"
                     class="login-buttom"
                     @click="postRegister()"
                   >
@@ -105,56 +105,64 @@ export default {
     ...mapState({ dataName: 'name' })
   },
   methods: {
-    // mapAction & mapMutation
-    ...mapActions(['login']),
-    postRegister() {
-      console.log(this.form)
-      const {
-        // user_name,
-        // user_lastname,
-        // user_birth,
-        // user_gender,
-        user_phone,
-        // user_address,
-        // user_img,
-        user_email,
-        user_password
-      } = this.form
-      const data = new FormData()
-      // data.append('user_name', user_name)
-      // data.append('user_lastname', user_lastname)
-      // data.append('user_birth', user_birth)
-      // data.append('user_gender', user_gender)
-      data.append('user_phone', user_phone)
-      // data.append('user_address', user_address)
-      // data.append('user_img', user_img)
-      data.append('user_email', user_email)
-      data.append('user_password', user_password)
-      data.append('data', JSON.stringify(data))
-      // untuk pengecekan saja
-      // for (var pair of data.entries()) {
-      //   console.log(pair[0] + ', ' + pair[1])
-      // }
-      console.log(data)
-      // axios
-      //   .post('http://localhost:3000/user/register', data)
-      //   .then(response => {
-      //     console.log(`submit success ${response} `)
-      //     // console.log(response)
-      //     // this.alert = truec
-      //     // this.isMsg = response.data.msg
-      //   })
-      //   .catch(error => {
-      //     console.log(`submit fail ${error}`)
-      //   })
-    },
-
-    loginUser() {
-      this.$router.push({
-        name: 'login'
-      })
+    ...mapActions(['register']),
+    onSubmit() {
+      this.register(this.form)
+        .then(result => {
+          console.log(result)
+          this.$router.push('/login')
+        })
+        .catch(error => {
+          this.makeToast(`${error}`, 'bad request', 'danger')
+        })
     }
   }
+  // postRegister() {
+  //   console.log(this.form)
+  //   const {
+  //     // user_name,
+  //     // user_lastname,
+  //     // user_birth,
+  //     // user_gender,
+  //     user_phone,
+  //     // user_address,
+  //     // user_img,
+  //     user_email,
+  //     user_password
+  //   } = this.form
+  //   const data = new FormData()
+  //   // data.append('user_name', user_name)
+  //   // data.append('user_lastname', user_lastname)
+  //   // data.append('user_birth', user_birth)
+  //   // data.append('user_gender', user_gender)
+  //   data.append('user_phone', user_phone)
+  //   // data.append('user_address', user_address)
+  //   // data.append('user_img', user_img)
+  //   data.append('user_email', user_email)
+  //   data.append('user_password', user_password)
+  //   data.append('data', JSON.stringify(data))
+  //   // untuk pengecekan saja
+  //   // for (var pair of data.entries()) {
+  //   //   console.log(pair[0] + ', ' + pair[1])
+  //   // }
+  //   console.log(data)
+  //   // axios
+  //   //   .post('http://localhost:3000/user/register', data)
+  //   //   .then(response => {
+  //   //     console.log(`submit success ${response} `)
+  //   //     // console.log(response)
+  //   //     // this.alert = truec
+  //   //     // this.isMsg = response.data.msg
+  //   //   })
+  //   //   .catch(error => {
+  //   //     console.log(`submit fail ${error}`)
+  //   //   })
+  // },
+  // loginUser() {
+  //   this.$router.push({
+  //     name: 'login'
+  //   })
+  // }
 }
 </script>
 

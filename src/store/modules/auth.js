@@ -37,20 +37,15 @@ export default {
           })
       })
     },
-    register() {
+    register(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://localhost:3000/user/register', this.form)
+          .post('http://localhost:3000/user/register', payload)
           .then(response => {
-            console.log(response)
-            this.alert = true
-            this.isMsg = response.data.msg
-            this.getProduct()
-            resolve(response)
+            resolve(response.data)
           })
           .catch(error => {
-            console.log(error.response)
-            reject(error.response)
+            reject(error.response.data.message)
           })
       })
     },
