@@ -52,6 +52,19 @@ export default {
       })
     }
   },
+  deldeteProduct(context, payload) {
+    return new Promise((resolve, reject) => {
+      axios.delete()
+      console
+        .log(payload, context)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          reject('Bad Request', `${error}`)
+        })
+    })
+  },
   getters: {
     getPageProduct(state) {
       return state.page

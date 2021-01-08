@@ -15,7 +15,7 @@
                 </center>
               </div>
               <div class="button-set-profile">
-                <button class="take-picture ">Take a picture</button><br />
+                <!-- <button type="file" class="take-picture">Choose File</button><br /> -->
                 <button type="file" class="cancel-user ">
                   Select From Galery
                 </button>
@@ -29,6 +29,7 @@
                   text="Select start hour"
                   class="m-2"
                   variant="outline-secondary"
+                  @click="HandleHour()"
                 >
                   <b-dropdown-item-button
                     >Select start hour</b-dropdown-item-button
@@ -66,16 +67,11 @@
                   text="Input stock"
                   class="m-2"
                   variant="outline-secondary"
+                  @click="handleStok()"
                 >
-                  <b-dropdown-item-button
-                    >Select start hour</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button
-                    >Another action</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button
-                    >Something else here...</b-dropdown-item-button
-                  >
+                  <b-dropdown-item-button>50</b-dropdown-item-button>
+                  <b-dropdown-item-button>30</b-dropdown-item-button>
+                  <b-dropdown-item-button>40</b-dropdown-item-button>
                 </b-dropdown>
               </div>
             </div></b-col
@@ -144,7 +140,7 @@
                 >
                 <br />
                 <br />
-                <button tye="" class="save-product">
+                <button type="" class="save-product" @click="postProduct()">
                   Save Product
                 </button>
               </form></b-container
@@ -179,6 +175,7 @@ export default {
         product_price: '',
         product_size: '',
         product_list: '',
+        product_stok: '',
         product_status: ''
       },
       alert: false,
@@ -216,6 +213,7 @@ export default {
         product_price,
         product_size,
         product_list,
+        product_stok,
         product_status
       } = this.form
       const data = new FormData()
@@ -225,6 +223,7 @@ export default {
       data.append('product_price', product_price)
       data.append('product_size', product_size)
       data.append('product_list', product_list)
+      data.append('product_stok', product_stok)
       data.append('product_status', product_status)
       for (var pair of data.entries()) {
         console.log(pair[0] + ', ' + pair[1])
@@ -275,6 +274,9 @@ export default {
   },
   handleSize() {
     this.form.product_size
+  },
+  handlestok() {
+    this.form.product_stok
   },
   handlegr() {
     // this.form.product_size
