@@ -96,13 +96,37 @@
                 ><br />
                 <p>Click size you want to use for this product</p>
                 <br />
-                <b-button squared variant="warning" class="type">L</b-button>
-                <b-button squared variant="warning" class="type">M</b-button>
-                <b-button squared variant="warning" class="type">S</b-button>
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('L')"
+                  class="type"
+                  >L</b-button
+                >
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('M')"
+                  class="type"
+                  >M</b-button
+                >
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('S')"
+                  class="type"
+                  >S</b-button
+                >
 
-                <b-button outline-secondary class="type">250gr</b-button>
-                <b-button outline-secondary class="type">300gr</b-button>
-                <b-button outline-secondary class="type">500gr</b-button>
+                <b-button outline-secondary @click="handlegr('1')" class="type"
+                  >250gr</b-button
+                >
+                <b-button outline-secondary @click="handlegr('2')" class="type"
+                  >300gr</b-button
+                >
+                <b-button outline-secondary @click="handlegr('3')" class="type"
+                  >500gr</b-button
+                >
                 <br />
                 <br />
                 <label for="lname" class="contact-1"
@@ -206,17 +230,17 @@ export default {
         console.log(pair[0] + ', ' + pair[1])
       }
 
-      // axios
-      //   .post('http://localhost:3000/product', this.form)
-      //   .then(response => {
-      //     console.log(response)
-      //     this.alert = true
-      //     this.isMsg = response.data.msg
-      //     this.getProduct()
-      //   })
-      //   .catch(error => {
-      //     console.log(error.response)
-      //   })
+      axios
+        .post('http://localhost:3000/product', this.form)
+        .then(response => {
+          console.log(response)
+          this.alert = true
+          this.isMsg = response.data.msg
+          this.getProduct()
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
     },
     //  pr
     deleteProduct(product_id) {
@@ -248,6 +272,12 @@ export default {
   handleFile(event) {
     console.log(event)
     this.form.product_image = event.target.file.index[0]
+  },
+  handleSize() {
+    this.form.product_size
+  },
+  handlegr() {
+    // this.form.product_size
   }
 }
 </script>

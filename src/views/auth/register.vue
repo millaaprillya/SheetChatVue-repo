@@ -16,31 +16,46 @@
           </b-row>
           <b-col class="login">
             <center class="login-text">SIGN UP</center>
+            <b-alert :show="alert">{{ isMsg }}</b-alert>
             <b-form
               @submit.prevent="onSubmit"
               @reset.prevent="onReset"
               class="login-1"
             >
-              <label for="fname" class="label-login">Email adress:</label><br />
+              <b-alert :show="alert">{{ isMsg }}</b-alert>
+              <label for="fname" class="label-register">Email adress:</label
+              ><br />
               <input
                 type="email"
                 v-model="form.user_email"
                 placeholder="Input Your Email ..."
                 class="login-input"
               /><br />
-              <label for="fname" class="label-login">Password :</label><br />
+              <label for="fname" class="label-register">Password :</label><br />
               <input
                 type="password"
                 v-model="form.user_password"
-                placeholder="Input Your Password ..."
+                placeholder="Input Your Password "
                 class="login-input"
               />
               <br />
               <br />
+              <label for="number" class="label-register">Number Phone :</label>
+              <input
+                type="number"
+                v-model="form.user_phone"
+                placeholder="Input Your Number."
+                class="login-input"
+              />
+              <br />
               <p>Forgot Password !</p>
               <div class="button-login">
                 <b-col
-                  ><button type="buttom" class="login-buttom">
+                  ><button
+                    type="buttom"
+                    class="login-buttom"
+                    @click="postRegister()"
+                  >
                     REGISTER
                   </button></b-col
                 >
@@ -61,6 +76,7 @@
 </template>
 
 <script>
+// import axios from 'axios'
 import Footer from '../../components/_base/Footer'
 import { mapState, mapActions } from 'vuex'
 export default {
@@ -70,7 +86,15 @@ export default {
   },
   data() {
     return {
+      register: [],
       form: {
+        user_name: '',
+        user_lastname: '',
+        user_birth: '',
+        user_gender: '',
+        user_phone: '',
+        user_address: '',
+        user_img: '',
         user_email: '',
         user_password: ''
       }
@@ -83,23 +107,48 @@ export default {
   methods: {
     // mapAction & mapMutation
     ...mapActions(['login']),
-    onSubmit() {
-      this.login(this.form)
-        .then(result => {
-          console.log(result)
-          this.$router.push('/')
-        })
-        .catch(error => {
-          // console.log(error.response)
-          alert(error.data.msg)
-        })
+    postRegister() {
+      console.log(this.form)
+      const {
+        // user_name,
+        // user_lastname,
+        // user_birth,
+        // user_gender,
+        user_phone,
+        // user_address,
+        // user_img,
+        user_email,
+        user_password
+      } = this.form
+      const data = new FormData()
+      // data.append('user_name', user_name)
+      // data.append('user_lastname', user_lastname)
+      // data.append('user_birth', user_birth)
+      // data.append('user_gender', user_gender)
+      data.append('user_phone', user_phone)
+      // data.append('user_address', user_address)
+      // data.append('user_img', user_img)
+      data.append('user_email', user_email)
+      data.append('user_password', user_password)
+      data.append('data', JSON.stringify(data))
+      // untuk pengecekan saja
+      // for (var pair of data.entries()) {
+      //   console.log(pair[0] + ', ' + pair[1])
+      // }
+      console.log(data)
+      // axios
+      //   .post('http://localhost:3000/user/register', data)
+      //   .then(response => {
+      //     console.log(`submit success ${response} `)
+      //     // console.log(response)
+      //     // this.alert = truec
+      //     // this.isMsg = response.data.msg
+      //   })
+      //   .catch(error => {
+      //     console.log(`submit fail ${error}`)
+      //   })
     },
-    onReset() {
-      this.form = {
-        user_email: '',
-        user_password: ''
-      }
-    },
+
     loginUser() {
       this.$router.push({
         name: 'login'
@@ -155,7 +204,7 @@ export default {
   box-sizing: border-box;
   border-radius: 20px;
 }
-.label-login {
+.label-register {
   margin-top: 5%;
   font-family: Rubik;
   font-style: normal;

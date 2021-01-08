@@ -37,6 +37,23 @@ export default {
           })
       })
     },
+    register() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://localhost:3000/user/register', this.form)
+          .then(response => {
+            console.log(response)
+            this.alert = true
+            this.isMsg = response.data.msg
+            this.getProduct()
+            resolve(response)
+          })
+          .catch(error => {
+            console.log(error.response)
+            reject(error.response)
+          })
+      })
+    },
     logout(context) {
       localStorage.removeItem('token')
       localStorage.removeItem('cart')

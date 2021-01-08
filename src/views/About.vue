@@ -100,6 +100,9 @@ export default {
       }
     }
   },
+  created() {
+    this.getProducts()
+  },
   methods: {
     getProduct() {
       axios

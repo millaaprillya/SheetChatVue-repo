@@ -17,7 +17,7 @@
               :src="'http://localhost:3000/' + item.product_image"
               class="rounded-circle"
               width="125"
-              height="125"
+              height="125a"
               alt="..."
             />
             <b-col class="card-title">

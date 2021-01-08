@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export default {
   state: {
     // limit: 10,
@@ -8,7 +9,6 @@ export default {
   },
   mutations: {
     setVoucher(state, payload) {
-      // payload =response.data
       state.voucher = payload.data
       state.totalRows = payload.pagination.totalData
     },
@@ -29,7 +29,7 @@ export default {
             //   state.product = response.data.data
           })
           .catch(error => {
-            console.log(error.response)
+            // console.log(error.response)
             reject(error)
           })
       })

@@ -17,7 +17,8 @@
                 </center>
               </div>
               <div class="button-set-profile">
-                <button class="set-photo ">Choose photo</button><br />
+                <button type="file" class="set-photo ">Choose photo</button
+                ><br />
                 <button class="remote-photo ">Remove photo</button><br />
                 <button class="set-password ">Set Password</button>
                 <p class="title-doyouwanna ">
@@ -36,19 +37,19 @@
               <p></p>
               <form>
                 <label for="fname" class="contact-1">Email adress:</label><br />
-                <input type="text" /><br />
+                <input type="text" v-model="form.user_email" /><br />
                 <label for="lname" class="contact-1">Delivery adress:</label
                 ><br />
-                <input type="text" /><br /><br />
+                <input type="text" v-model="form.user_address" /><br /><br />
 
                 <p class="contact">Details</p>
-                <label for="fname" class="contact-1">Display name :</label
-                ><br />
-                <input type="text" /><br />
                 <label for="lname" class="contact-1">First Name:</label><br />
-                <input type="text" /><br /><br />
+                <input type="text" v-model="form.user_name" /><br /><br />
                 <label for="lname" class="contact-1">Last Name:</label><br />
-                <input type="text" /><br /><br /></form
+                <input
+                  type="text"
+                  v-model="form.user_lastname"
+                /><br /><br /></form
             ></b-container>
           </b-col>
         </b-row>
@@ -60,12 +61,85 @@
 </template>
 
 <script>
-import Footer from '../../components/_base/Footer.vue'
+import Footer from '../../components/_base/Footer'
 import Navbar from '../../components/_base/Navbar'
+import { mapState, mapActions } from 'vuex'
 export default {
+  name: 'login',
   components: {
-    Navbar,
-    Footer
+    Footer,
+    Navbar
+  },
+  data() {
+    return {
+      register: [],
+      form: {
+        user_name: '',
+        user_lastname: '',
+        user_birth: '',
+        user_gender: '',
+        user_phone: '',
+        user_address: '',
+        user_img: '',
+        user_email: '',
+        user_password: ''
+      }
+    }
+  },
+  computed: {
+    ...mapState(['name']),
+    ...mapState({ dataName: 'name' })
+  },
+  methods: {
+    // mapAction & mapMutation
+    ...mapActions(['login']),
+    postRegister() {
+      console.log(this.form)
+      const {
+        // user_name,
+        // user_lastname,
+        // user_birth,
+        // user_gender,
+        user_phone,
+        // user_address,
+        // user_img,
+        user_email,
+        user_password
+      } = this.form
+      const data = new FormData()
+      // data.append('user_name', user_name)
+      // data.append('user_lastname', user_lastname)
+      // data.append('user_birth', user_birth)
+      // data.append('user_gender', user_gender)
+      data.append('user_phone', user_phone)
+      // data.append('user_address', user_address)
+      // data.append('user_img', user_img)
+      data.append('user_email', user_email)
+      data.append('user_password', user_password)
+      data.append('data', JSON.stringify(data))
+      // untuk pengecekan saja
+      // for (var pair of data.entries()) {
+      //   console.log(pair[0] + ', ' + pair[1])
+      // }
+      console.log(data)
+      // axios
+      //   .post('http://localhost:3000/user/register', data)
+      //   .then(response => {
+      //     console.log(`submit success ${response} `)
+      //     // console.log(response)
+      //     // this.alert = truec
+      //     // this.isMsg = response.data.msg
+      //   })
+      //   .catch(error => {
+      //     console.log(`submit fail ${error}`)
+      //   })
+    },
+
+    loginUser() {
+      this.$router.push({
+        name: 'login'
+      })
+    }
   }
 }
 </script>

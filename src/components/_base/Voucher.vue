@@ -28,62 +28,80 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 export default {
+  name: 'voucher',
+
   computed: {
-    rows() {
-      return this.totalRows
-    }
+    // rows() {
+    //   return this.totalRows
+    // },
+    ...mapGetters({
+      voucher: 'getDataVoucher'
+    })
   },
   data() {
     return {
-      voucher: [],
+      // product: [],
       form: {
+        voucher_id: '',
         voucher_name: '',
+        voucher_diskon: '',
         voucher_list: '',
         voucher_status: ''
       },
       alert: false,
       isMsg: '',
-      voucher_id: '',
-      currentPage: '1',
-      totalRows: 'null',
-      limit: 8,
-      page: 1
+      product_id: ''
     }
   },
   created() {
     this.getVoucher()
-    console.log(this.getVoucher)
   },
   methods: {
-    getVoucher() {
-      axios
-        .get('http://localhost:3000/voucher')
-        .then(response => {
-          console.log(response)
-          this.voucher = response.data.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    postProduct() {
+    ...mapActions(['getVoucher']),
+    postVoucher() {
+      const {
+        voucher_name,
+        voucher_diskon,
+        voucher_list,
+        voucher_status
+      } = this.form
       console.log(this.form)
+      const data = new FormData()
+      data.append('voucher_name', voucher_name)
+      data.append('voucher_diskon', voucher_diskon)
+      data.append('voucher-list', voucher_list)
+      data.append('voucher_status', voucher_status)
+      // untuk pengecekan saja
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      // axios
+      //   .post('http://localhost:3000/product', data)
+      //   .then(response => {
+      //     console.log(response)
+      //     this.alert = true
+      //     this.isMsg = response.data.msg
+      //     // this.getProduct()
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response)
+      //   })
+    },
+    //  pr
+    deleteVoucher(item) {
       axios
-        .post('http://localhost:3000/voucher', this.form)
+        .delete(`http://localhost:3000/voucher/${item.voucher_id}`)
         .then(response => {
           console.log(response)
           this.alert = true
           this.isMsg = response.data.msg
-          this.postVoucher()
+          this.getVoucher()
         })
         .catch(error => {
           console.log(error.response)
         })
-    },
-    //  pr
-    deleteVoucher(voucher_id) {
-      console.log(voucher_id)
     },
     setProduct(data) {
       console.log(data)

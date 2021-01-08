@@ -104,7 +104,7 @@ export default {
     },
     registerUser() {
       this.$router.push({
-        name: 'user'
+        name: 'register'
       })
     }
   }
