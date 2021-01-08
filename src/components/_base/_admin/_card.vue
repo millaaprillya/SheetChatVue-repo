@@ -82,9 +82,8 @@ export default {
     this.getProducts()
   },
   methods: {
-    ...mapActions(['getProducts']),
+    ...mapActions(['getProducts', 'postProduct']),
     postProduct() {
-      console.log(this.form)
       const {
         category_id,
         product_name,
@@ -102,58 +101,53 @@ export default {
       data.append(' product_size', product_size)
       data.append(' product_list', product_list)
       data.append('product_status', product_status)
-      // untuk pengecekan saja
-      for (var pair of data.entries()) {
-        console.log(pair[0] + ', ' + pair[1])
-      }
-      // axios
-      //   .post('http://localhost:3000/product', data)
-      //   .then(response => {
-      //     console.log(response)
-      //     this.alert = true
-      //     this.isMsg = response.data.msg
-      //     // this.getProduct()
-      //   })
-      //   .catch(error => {
-      //     console.log(error.response)
-      //   })
-    },
-    //  pr
-    deleteProduct(item) {
-      axios
-        .delete(`http://localhost:3000/product/${item.product_id}`)
+      this.addProducts(data)
         .then(response => {
+          this.getProducts()
           console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
+          this.makeToast('Products Updated', 'Success', 'success')
         })
-        .catch(error => {
-          console.log(error.response)
+        .catch(() => {
+          this.makeToast('Failed add product', 'Error', 'danger')
         })
-    },
-    setProduct(data) {
-      console.log(data)
-
-      this.form = data
-      this.product_id = data.product_id
-    },
-    pacthProduct() {
-      console.log(this.form)
-    },
-    handlePageChange(numberPage) {
-      console.log(numberPage)
-      this.page = numberPage
-      this.getProduct()
-    },
-    productAbout(data) {
-      console.log(data)
-      this.form = data
-      this.$router.push({
-        name: 'aboutProduct',
-        params: { id: data.product_id }
-      })
+      this.$bvModal.hide('add-product-modal')
     }
+  },
+  //  pr
+  deleteProduct(item) {
+    axios
+      .delete(`http://localhost:3000/product/${item.product_id}`)
+      .then(response => {
+        console.log(response)
+        this.alert = true
+        this.isMsg = response.data.msg
+        this.getProduct()
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+  },
+  setProduct(data) {
+    console.log(data)
+
+    this.form = data
+    this.product_id = data.product_id
+  },
+  pacthProduct() {
+    console.log(this.form)
+  },
+  handlePageChange(numberPage) {
+    console.log(numberPage)
+    this.page = numberPage
+    this.getProduct()
+  },
+  productAbout(data) {
+    console.log(data)
+    this.form = data
+    this.$router.push({
+      name: 'aboutProduct',
+      params: { id: data.product_id }
+    })
   },
   handleFile(event) {
     console.log(event)

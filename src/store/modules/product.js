@@ -36,6 +36,20 @@ export default {
             reject(error)
           })
       })
+    },
+    postProduct(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://localhost:3000/product', payload)
+          .then(response => {
+            context.commit('setProduct', response.data.data)
+            console.log(response.data)
+            resolve(response.data.data)
+          })
+          .catch(error => {
+            reject(error.response)
+          })
+      })
     }
   },
   getters: {

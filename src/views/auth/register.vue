@@ -16,13 +16,12 @@
           </b-row>
           <b-col class="login">
             <center class="login-text">SIGN UP</center>
-            <b-alert :show="alert">{{ isMsg }}</b-alert>
+
             <b-form
               @submit.prevent="onSubmit"
               @reset.prevent="onReset"
               class="login-1"
             >
-              <b-alert :show="alert">{{ isMsg }}</b-alert>
               <label for="fname" class="label-register">Email adress:</label
               ><br />
               <input
@@ -78,7 +77,7 @@
 <script>
 // import axios from 'axios'
 import Footer from '../../components/_base/Footer'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'login',
   components: {
@@ -86,7 +85,6 @@ export default {
   },
   data() {
     return {
-      register: [],
       form: {
         user_name: '',
         user_lastname: '',
@@ -100,10 +98,7 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapState(['name']),
-    ...mapState({ dataName: 'name' })
-  },
+  computed: {},
   methods: {
     ...mapActions(['register']),
     onSubmit() {
