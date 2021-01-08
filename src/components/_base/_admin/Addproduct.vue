@@ -16,47 +16,31 @@
               </div>
               <div class="button-set-profile">
                 <!-- <button type="file" class="take-picture">Choose File</button><br /> -->
-                <button type="file" class="cancel-user ">
+                <button type="file" class="cancel-user" @click="chooseFiles()">
                   Select From Galery
                 </button>
-
+                <input
+                  id="fileUpload"
+                  type="file"
+                  hidden
+                  @change="handleFile"
+                />
                 <p class="title-doyouwanna ">
-                  Delivery Hour :
+                  Status:
                 </p>
                 <b-dropdown
                   size="lg"
                   split
-                  text="Select start hour"
-                  class="m-2"
-                  variant="outline-secondary"
-                  @click="HandleHour()"
-                >
-                  <b-dropdown-item-button
-                    >Select start hour</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button
-                    >Another action</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button
-                    >Something else here...</b-dropdown-item-button
-                  >
-                </b-dropdown>
-                <b-dropdown
-                  size="lg"
-                  split
-                  text="Select end hour"
+                  text="Product Status"
                   class="m-2"
                   variant="outline-secondary"
                 >
-                  <b-dropdown-item-button
-                    >Select start hour</b-dropdown-item-button
+                  <b-dropdown-item-button @click="handleStatus(1)"
+                    >Active</b-dropdown-item-button
                   >
-                  <b-dropdown-item-button
-                    >Another action</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button
-                    >Something else here...</b-dropdown-item-button
-                  >
+                  <b-dropdown-item-button @click="handleStatus(0)"
+                    >none Active
+                  </b-dropdown-item-button>
                 </b-dropdown>
                 <p class="title-doyouwanna ">
                   Input stock :
@@ -67,11 +51,16 @@
                   text="Input stock"
                   class="m-2"
                   variant="outline-secondary"
-                  @click="handleStok()"
                 >
-                  <b-dropdown-item-button>50</b-dropdown-item-button>
-                  <b-dropdown-item-button>30</b-dropdown-item-button>
-                  <b-dropdown-item-button>40</b-dropdown-item-button>
+                  <b-dropdown-item-button @click="handleStok(50)"
+                    >50</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(30)"
+                    >30</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(40)"
+                    >40</b-dropdown-item-button
+                  >
                 </b-dropdown>
               </div>
             </div></b-col
@@ -80,14 +69,34 @@
             <b-container class="card-contact">
               <p></p>
               <form>
+                <label for="fname" class="contact-1">Category food :</label
+                ><br />
+                <b-dropdown
+                  size="lg"
+                  split
+                  text="Choose Category here"
+                  class="m-2"
+                  variant="outline-secondary"
+                >
+                  <b-dropdown-item-button @click="handleCategory(1)"
+                    >Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(2)"
+                    >Non Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(3)"
+                    >Food</b-dropdown-item-button
+                  >
+                </b-dropdown>
+                <br />
                 <label for="fname" class="contact-1">Name :</label><br />
-                <input type="text" /><br />
+                <input type="text" v-model="form.product_name" /><br />
                 <label for="fname" class="contact-1">Price:</label><br />
-                <input type="number" /><br /><br />
+                <input type="number" v-model="form.product_price" /><br /><br />
 
                 <p class="contact">Details</p>
                 <label for="fname" class="contact-1">Description :</label><br />
-                <input type="text" /><br />
+                <input type="text" v-model="form.product_list" /><br />
                 <label for="lname" class="contact-1">Input Product Size :</label
                 ><br />
                 <p>Click size you want to use for this product</p>
@@ -114,13 +123,22 @@
                   >S</b-button
                 >
 
-                <b-button outline-secondary @click="handlegr('1')" class="type"
+                <b-button
+                  outline-secondary
+                  @click="handleSize('1')"
+                  class="type"
                   >250gr</b-button
                 >
-                <b-button outline-secondary @click="handlegr('2')" class="type"
+                <b-button
+                  outline-secondary
+                  @click="handleSize('2')"
+                  class="type"
                   >300gr</b-button
                 >
-                <b-button outline-secondary @click="handlegr('3')" class="type"
+                <b-button
+                  outline-secondary
+                  @click="handleSize('3')"
+                  class="type"
                   >500gr</b-button
                 >
                 <br />
@@ -140,7 +158,11 @@
                 >
                 <br />
                 <br />
-                <button type="" class="save-product" @click="postProduct()">
+                <button
+                  type="button"
+                  class="save-product"
+                  @click="postProduct()"
+                >
                   Save Product
                 </button>
               </form></b-container
@@ -208,6 +230,7 @@ export default {
     postProduct() {
       console.log(this.form)
       const {
+        category_id,
         product_name,
         product_image,
         product_price,
@@ -217,7 +240,7 @@ export default {
         product_status
       } = this.form
       const data = new FormData()
-
+      data.append('category_id', category_id)
       data.append('product_name', product_name)
       data.append('product_image', product_image)
       data.append('product_price', product_price)
@@ -228,9 +251,8 @@ export default {
       for (var pair of data.entries()) {
         console.log(pair[0] + ', ' + pair[1])
       }
-
       axios
-        .post('http://localhost:3000/product', this.form)
+        .post('http://localhost:3000/product', data)
         .then(response => {
           console.log(response)
           this.alert = true
@@ -266,20 +288,32 @@ export default {
       console.log(numberPage)
       this.page = numberPage
       this.getProduct()
+    },
+    handleFile(event) {
+      console.log(event)
+      this.form.product_image = event.target.files[0]
+    },
+    handleSize(size) {
+      console.log(size)
+      this.form.product_size = size
+    },
+    handleStok(stock) {
+      this.form.product_stok = stock
+      console.log(stock)
+    },
+    handlegr() {
+      // this.form.product_size
+    },
+    handleStatus(status) {
+      this.form.product_status = status
+      console.log(status)
+    },
+    chooseFiles() {
+      document.getElementById('fileUpload').click()
+    },
+    handleCategory(category) {
+      this.form.category = category
     }
-  },
-  handleFile(event) {
-    console.log(event)
-    this.form.product_image = event.target.file.index[0]
-  },
-  handleSize() {
-    this.form.product_size
-  },
-  handlestok() {
-    this.form.product_stok
-  },
-  handlegr() {
-    // this.form.product_size
   }
 }
 </script>
