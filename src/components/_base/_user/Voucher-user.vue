@@ -1,6 +1,5 @@
 <template>
   <div class="voucher">
-    <!-- <div class="coupon" v-for="(item, index) in voucher" :key="index"> -->
     <div class="coupon">
       <div class="containerr">
         <h3>VOUCHER</h3>
@@ -31,15 +30,25 @@
         4. Should make member card to apply coupon
       </p>
     </ul>
-    <button type="" class="add-voucher">
-      ADD VOUCHER
-    </button>
+    <div>
+      <b-button v-b-modal.modal-xl squared variant="warning">
+        ADD VOUCHER</b-button
+      >
+      <b-modal id="modal-xl" size="xl" title="ADD VOUCHER"
+        ><AddVoucher
+      /></b-modal>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import AddVoucher from '../../_base/_admin/_add_voucher'
+
 export default {
+  components: {
+    AddVoucher
+  },
   computed: {
     rows() {
       return this.totalRows
@@ -112,6 +121,11 @@ export default {
     },
     productAbout(voucher_id) {
       this.$router.push({ name: 'aboutProduct', params: { id: voucher_id } })
+    },
+    addVoucher() {
+      this.$router.push({
+        name: 'addVoucher'
+      })
     }
   }
 }

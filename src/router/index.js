@@ -6,6 +6,7 @@ import Product from '../views/Product.vue'
 import aboutProduct from '../views/About.vue'
 import userHome from '../views/user.vue'
 import orderDetail from '../views/detailOrder.vue'
+import addVoucher from '../views/admin/add_voucher.vue'
 import login from '../views/auth/login.vue'
 import register from '../views/auth/register.vue'
 import user from '../views/auth/user.vue'
@@ -42,6 +43,11 @@ const routes = [
     path: '/payment/:id',
     name: 'payment',
     component: payment
+  },
+  {
+    path: '/addVoucher/',
+    name: 'addVoucher',
+    component: addVoucher
   },
   {
     path: '/userHome/',

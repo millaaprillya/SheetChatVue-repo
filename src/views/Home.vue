@@ -74,7 +74,7 @@
                 v-model="currentPage"
                 :total-rows="rows"
                 :per-page="limit"
-                @change="handlePageChange"
+                @change="handlePageChange(2)"
                 class="pagination"
               ></b-pagination>
             </b-container>

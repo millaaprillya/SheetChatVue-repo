@@ -2,10 +2,22 @@ import axios from 'axios'
 
 export default {
   state: {
-    limit: 10,
+    form: {
+      category_id: '',
+      product_name: '',
+      product_image: '',
+      product_price: '',
+      product_size: '',
+      product_list: '',
+      product_stok: '',
+      product_status: ''
+    },
+    limit: 8,
     page: 1,
     products: [],
-    totalRows: null
+    totalRows: null,
+    search: '',
+    sort: ''
   },
   mutations: {
     setProduct(state, payload) {
@@ -15,6 +27,31 @@ export default {
     },
     changePage(state, payload) {
       state.page = payload
+    },
+    addpostProduct(state, payload) {
+      const {
+        category_id,
+        product_name,
+        product_image,
+        product_price,
+        product_size,
+        product_list,
+        product_stok,
+        product_status
+      } = state.form
+      const data = new FormData()
+      data.append('category_id', category_id)
+      data.append('product_name', product_name)
+      data.append('product_image', product_image)
+      data.append('product_price', product_price)
+      data.append('product_size', product_size)
+      data.append('product_list', product_list)
+      data.append('product_stok', product_stok)
+      data.append('product_status', product_status)
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      state.form = payload.data
     }
   },
   actions: {
@@ -42,7 +79,7 @@ export default {
         axios
           .post('http://localhost:3000/product', payload)
           .then(response => {
-            context.commit('setProduct', response.data.data)
+            context.commit('addpostProduct', response.data.data)
             console.log(response.data)
             resolve(response.data.data)
           })
@@ -52,9 +89,9 @@ export default {
       })
     }
   },
-  deldeteProduct(context, payload) {
+  deleteProduct(context, payload) {
     return new Promise((resolve, reject) => {
-      axios.delete()
+      axios.delete(`http://localhost:300o/product/`, payload)
       console
         .log(payload, context)
         .then(response => {

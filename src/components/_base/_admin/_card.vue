@@ -83,80 +83,51 @@ export default {
   },
   methods: {
     ...mapActions(['getProducts', 'postProduct']),
-    postProduct() {
-      const {
-        category_id,
-        product_name,
-        product_image,
-        product_price,
-        product_size,
-        product_list,
-        product_status
-      } = this.form
-      const data = new FormData()
-      data.append('category_id', category_id)
-      data.append('product_name', product_name)
-      data.append('product_image', product_image)
-      data.append('product_price', product_price)
-      data.append(' product_size', product_size)
-      data.append(' product_list', product_list)
-      data.append('product_status', product_status)
-      this.addProducts(data)
+    //  pr
+    deleteProduct(item) {
+      axios
+        .delete(`http://localhost:3000/product/${item.product_id}`)
         .then(response => {
-          this.getProducts()
           console.log(response)
-          this.makeToast('Products Updated', 'Success', 'success')
+          this.alert = true
+          this.isMsg = response.data.msg
+          this.getProduct()
         })
-        .catch(() => {
-          this.makeToast('Failed add product', 'Error', 'danger')
+        .catch(error => {
+          console.log(error.response)
         })
-      this.$bvModal.hide('add-product-modal')
-    }
-  },
-  //  pr
-  deleteProduct(item) {
-    axios
-      .delete(`http://localhost:3000/product/${item.product_id}`)
-      .then(response => {
-        console.log(response)
-        this.alert = true
-        this.isMsg = response.data.msg
-        this.getProduct()
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
-  },
-  setProduct(data) {
-    console.log(data)
+    },
+    setProduct(data) {
+      console.log(data)
 
-    this.form = data
-    this.product_id = data.product_id
-  },
-  pacthProduct() {
-    console.log(this.form)
-  },
-  handlePageChange(numberPage) {
-    console.log(numberPage)
-    this.page = numberPage
-    this.getProduct()
-  },
-  productAbout(data) {
-    console.log(data)
-    this.form = data
-    this.$router.push({
-      name: 'aboutProduct',
-      params: { id: data.product_id }
-    })
-  },
-  handleFile(event) {
-    console.log(event)
-    this.form.product_image = event.target.files[0]
-  },
-  addProductform() {
-    this.$router.push({
-      name: 'addProduct'
-    })
+      this.form = data
+      this.product_id = data.product_id
+    },
+    pacthProduct() {
+      console.log(this.form)
+    },
+    handlePageChange(numberPage) {
+      console.log(numberPage)
+      this.page = numberPage
+      this.getProduct()
+    },
+    productAbout(data) {
+      console.log(data)
+      this.form = data
+      this.$router.push({
+        name: 'aboutProduct',
+        params: { id: data.product_id }
+      })
+    },
+    handleFile(event) {
+      console.log(event)
+      this.form.product_image = event.target.files[0]
+    },
+    addProductform() {
+      this.$router.push({
+        name: 'addProduct'
+      })
+    }
   }
 }
 </script>

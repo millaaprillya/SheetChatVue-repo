@@ -25,9 +25,30 @@
                   hidden
                   @change="handleFile"
                 />
+                <label for="fname" class="contact-1">Category food :</label
+                ><br />
+                <b-dropdown
+                  size="lg"
+                  split
+                  text="Choose Category here"
+                  class="m-2"
+                  variant="outline-secondary"
+                >
+                  <b-dropdown-item-button @click="handleCategory(1)"
+                    >Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(2)"
+                    >Non Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(3)"
+                    >Food</b-dropdown-item-button
+                  >
+                </b-dropdown>
+
                 <p class="title-doyouwanna ">
                   Status:
                 </p>
+
                 <b-dropdown
                   size="lg"
                   split
@@ -69,26 +90,6 @@
             <b-container class="card-contact">
               <p></p>
               <form>
-                <label for="fname" class="contact-1">Category food :</label
-                ><br />
-                <b-dropdown
-                  size="lg"
-                  split
-                  text="Choose Category here"
-                  class="m-2"
-                  variant="outline-secondary"
-                >
-                  <b-dropdown-item-button @click="handleCategory(1)"
-                    >Coffe</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button @click="handleStok(2)"
-                    >Non Coffe</b-dropdown-item-button
-                  >
-                  <b-dropdown-item-button @click="handleStok(3)"
-                    >Food</b-dropdown-item-button
-                  >
-                </b-dropdown>
-                <br />
                 <label for="fname" class="contact-1">Name :</label><br />
                 <input type="text" v-model="form.product_name" /><br />
                 <label for="fname" class="contact-1">Price:</label><br />
@@ -143,6 +144,7 @@
                 >
                 <br />
                 <br />
+
                 <label for="lname" class="contact-1"
                   >Input delivery methods :</label
                 >
@@ -158,6 +160,7 @@
                 >
                 <br />
                 <br />
+
                 <button
                   type="button"
                   class="save-product"
@@ -177,7 +180,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapActions } from 'vuex'
 export default {
   name: 'Product',
 
@@ -213,20 +216,7 @@ export default {
     this.getProduct()
   },
   methods: {
-    getProduct() {
-      axios
-        .get(
-          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
-        )
-        .then(response => {
-          console.log(response)
-          this.totalRows = response.data.pagination.totalData
-          this.product = response.data.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+    ...mapActions(['postProduct']),
     postProduct() {
       console.log(this.form)
       const {
@@ -248,20 +238,23 @@ export default {
       data.append('product_list', product_list)
       data.append('product_stok', product_stok)
       data.append('product_status', product_status)
+      this.postProduct(data)
       for (var pair of data.entries()) {
         console.log(pair[0] + ', ' + pair[1])
       }
-      axios
-        .post('http://localhost:3000/product', data)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+      // this.postProduct(data)
+      //   // this.postProduct(data)
+      //   // axios
+      //   //   .post('http://localhost:3000/product', data)
+      //   //   .then(response => {
+      //   //     console.log(response)
+      //   //     this.alert = true
+      //   //     this.isMsg = response.data.msg
+      //   //     this.getProduct()
+      //   //   })
+      //   //   .catch(error => {
+      //   //     console.log(error.response)
+      //   //   })
     },
     //  pr
     deleteProduct(product_id) {

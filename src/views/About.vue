@@ -1,80 +1,84 @@
 <template>
-  <div class="card">
-    <Navbar />
-    <b-container fluid="lg" class="product_detail_title">
-      <b-col col="12">Favorite & Promo > Cold Brew > Edit product</b-col>
-      <b-container class="product_detail">
-        <b-row>
-          <b-col class="detail-gambar">
-            <img
-              src="https://pa1.narvii.com/6527/d792d579137d9e2c410ff849152fb9c4542431d2_hq.gif"
-              width="500"
-              height="500"
-              alt="..."
-            />
-            <b-col col="12" class="Delivery-title"
-              >Delivery only on Monday to friday at 1 - 7 pm</b-col
-            >
-          </b-col>
-          <b-col class="detail-listProduct">
-            <ul>
-              <p>
-                <input
-                  placeholder="Product Name"
-                  type="text"
-                  class="text-product-name"
-                  v-model="form.product_name"
+  <div class="about">
+    <div class="about_product">
+      <div class="centered">
+        <Navbar />
+        <b-container fluid="lg" class="product_detail_title">
+          <b-col col="12">Favorite & Promo > Cold Brew > Edit product</b-col>
+          <b-container class="product_detail">
+            <b-row>
+              <b-col class="detail-gambar">
+                <img
+                  src="https://pa1.narvii.com/6527/d792d579137d9e2c410ff849152fb9c4542431d2_hq.gif"
+                  width="500"
+                  height="500"
+                  alt="..."
                 />
-              </p>
-              <p>
-                <input
-                  placeholder="Rp :"
-                  type="number"
-                  class="text-product-price"
-                  v-model="form.product_price"
-                />
-              </p>
-              <p>
-                <input
-                  placeholder="Info "
-                  type="text"
-                  class="text-product-list"
-                  v-model="form.product_list"
-                />
-              </p>
+                <b-col col="12" class="Delivery-title"
+                  >Delivery only on Monday to friday at 1 - 7 pm</b-col
+                >
+              </b-col>
+              <b-col class="detail-listProduct">
+                <ul>
+                  <p>
+                    <input
+                      placeholder="Product Name"
+                      type="text"
+                      class="text-product-name"
+                      v-model="form.product_name"
+                    />
+                  </p>
+                  <p>
+                    <input
+                      placeholder="Rp :"
+                      type="number"
+                      class="text-product-price"
+                      v-model="form.product_price"
+                    />
+                  </p>
+                  <p>
+                    <input
+                      placeholder="Info "
+                      type="text"
+                      class="text-product-list"
+                      v-model="form.product_list"
+                    />
+                  </p>
 
-              <div class="dropdown">
-                <button class="dropbtn">SELECT SIZE</button>
-                <div class="dropdown-content">
-                  <a>LG</a>
-                  <a>SM</a>
-                  <a>SM</a>
-                </div>
-              </div>
-              <div class="dropdown">
-                <button class="dropbtn">SELECT DELIVERY METHOD</button>
-                <div class="dropdown-content">
-                  <a>1</a>
-                  <a>2</a>
-                  <a>3</a>
-                </div>
-              </div>
-              <div class="add-cart-1">
-                <button class="add-cart">
-                  ADD CART
-                </button>
-              </div>
-              <div class="add-cart-1">
-                <button class="add-cart">
-                  SAVE CHANGES
-                </button>
-              </div>
-            </ul>
-          </b-col>
-        </b-row>
-      </b-container>
-    </b-container>
-    <Footer />
+                  <div class="dropdown">
+                    <button class="dropbtn">SELECT SIZE</button>
+                    <div class="dropdown-content">
+                      <a>LG</a>
+                      <a>SM</a>
+                      <a>SM</a>
+                    </div>
+                  </div>
+                  <div class="dropdown">
+                    <button class="dropbtn">SELECT DELIVERY METHOD</button>
+                    <div class="dropdown-content">
+                      <a>1</a>
+                      <a>2</a>
+                      <a>3</a>
+                    </div>
+                  </div>
+                  <div class="add-cart-1">
+                    <button class="add-cart">
+                      ADD CART
+                    </button>
+                  </div>
+                  <div class="add-cart-1">
+                    <button class="add-cart">
+                      SAVE CHANGES
+                    </button>
+                  </div>
+                </ul>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-container>
+        <Footer />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -101,7 +105,7 @@ export default {
     }
   },
   created() {
-    this.getProducts()
+    this.getProduct()
   },
   methods: {
     getProduct() {
@@ -138,7 +142,15 @@ export default {
     },
     setProduct(data) {
       console.log(data)
-
+      // console.log(this.product_id)
+      // this.form = {
+      //   category_id: 'data.category_id',
+      //   product_name: 'data.product_name',
+      //   product_price: 'data.product_price',
+      //   product_size: 'data.product_size',
+      //   product_list: 'product_list',
+      //   product_status: 'product_status'
+      // }
       this.form = data
       this.product_id = data.product_id
     },
@@ -173,13 +185,11 @@ input:focus {
 }
 .text-product-name {
   font-size: x-large;
-
   font-family: Poppins;
   font-style: normal;
   font-weight: 900;
   font-size: 65px;
   line-height: 97px;
-
   color: #000000;
 }
 .text-product-price {
@@ -196,26 +206,21 @@ input:focus {
   font-size: 25px;
   line-height: 138.84%;
   /* or 35px */
-
   letter-spacing: 0.03em;
-
   color: #000000;
 }
 .dropbtn {
   background-color: white;
   color: #9f9f9f;
   padding: 16px;
-
   font-size: 16px;
   border: #9f9f9f;
   cursor: pointer;
 }
-
 .dropdown {
   position: relative;
   display: inline-block;
 }
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -230,15 +235,12 @@ input:focus {
   text-decoration: none;
   display: block;
 }
-
 .dropdown-content a:hover {
   background-color: #f1f1f1;
 }
-
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
 .dropdown:hover .dropbtn {
   background-color: white;
 }
@@ -251,9 +253,7 @@ input:focus {
   font-size: 25px;
   line-height: 138.84%;
   /* or 35px */
-
   letter-spacing: 0.02em;
-
   color: #000000;
 }
 .add-cart-1 {
