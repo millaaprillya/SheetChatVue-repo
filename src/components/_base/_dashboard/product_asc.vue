@@ -2,6 +2,7 @@
   <b-row class="mr-card">
     <b-container class="bv-example-row">
       <b-row>
+        <h4>Low Price For you</h4>
         <div
           xl="3"
           lg="4"
@@ -48,15 +49,12 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  name: 'Product',
+  name: 'Product ASC',
 
   computed: {
-    // rows() {
-    //   return this.totalRows
-    // },
     ...mapGetters({
       products: 'getDataProduct'
     })
@@ -82,13 +80,19 @@ export default {
     this.getProducts()
   },
   methods: {
-    ...mapActions(['getProducts', 'postProduct', 'productDeleted']),
+    ...mapActions(['getProductsAsc']),
     deleteProduct(item) {
-      this.productDeleted(item)
-      // console.log(item)
-      this.$router.push({
-        name: 'Home'
-      })
+      axios
+        .delete(`http://localhost:3000/product/${item.product_id}`)
+        .then(response => {
+          console.log(response)
+          this.alert = true
+          this.isMsg = response.data.msg
+          this.getProduct()
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
     },
     setProduct(data) {
       console.log(data)

@@ -8,11 +8,12 @@
             <div class="colum-user-1 ">
               <div class="button-set-profile">
                 <input
-                  id="fileUpload"
+                  id="fileUploadVoucher"
                   type="file"
                   hidden
                   @change="handleFile"
                 />
+                <br />
                 <label for="fname" class="contact-1">Voucher Diskon</label
                 ><br />
                 <b-dropdown
@@ -32,6 +33,7 @@
                     >100%</b-dropdown-item-button
                   >
                 </b-dropdown>
+                <br />
                 <label for="fname" class="contact-1">Voucher Status :</label>
                 <b-dropdown
                   size="lg"

@@ -1,159 +1,267 @@
 <template>
-  <div class="about">
-    <div class="about_product">
-      <div class="centered">
-        <Navbar />
-        <b-container fluid="lg" class="product_detail_title">
-          <b-col col="12">Favorite & Promo > Cold Brew > Edit product</b-col>
-          <b-container class="product_detail">
-            <b-row>
-              <b-col class="detail-gambar">
-                <img
-                  src="https://pa1.narvii.com/6527/d792d579137d9e2c410ff849152fb9c4542431d2_hq.gif"
-                  width="500"
-                  height="500"
-                  alt="..."
+  <div>
+    <Navbar />
+    <b-container fluid class="bg-user">
+      <b-col class="txt-user-profile"> <p>Pacthroduct</p></b-col>
+      <b-container class="card">
+        <b-row>
+          <b-col>
+            <div class="colum-user-1 ">
+              <div class="button-set-profile">
+                <!-- <button type="file" class="take-picture">Choose File</button><br /> -->
+                <button type="file" class="cancel-user" @click="chooseFiles()">
+                  Select From Galery
+                </button>
+                <input
+                  id="fileUpdate"
+                  type="file"
+                  hidden
+                  @change="handleFile"
                 />
-                <b-col col="12" class="Delivery-title"
-                  >Delivery only on Monday to friday at 1 - 7 pm</b-col
+                <br />
+                <label for="fname" class="contact-1">Category food :</label
+                ><br />
+                <b-dropdown
+                  size="lg"
+                  split
+                  text="Choose Category here"
+                  class="m-2"
+                  variant="outline-secondary"
                 >
-              </b-col>
-              <b-col class="detail-listProduct">
-                <ul>
-                  <p>
-                    <input
-                      placeholder="Product Name"
-                      type="text"
-                      class="text-product-name"
-                      v-model="form.product_name"
-                    />
-                  </p>
-                  <p>
-                    <input
-                      placeholder="Rp :"
-                      type="number"
-                      class="text-product-price"
-                      v-model="form.product_price"
-                    />
-                  </p>
-                  <p>
-                    <input
-                      placeholder="Info "
-                      type="text"
-                      class="text-product-list"
-                      v-model="form.product_list"
-                    />
-                  </p>
+                  <b-dropdown-item-button @click="handleCategory(1)"
+                    >Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleCategory(2)"
+                    >Non Coffe</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleCategory(3)"
+                    >Food</b-dropdown-item-button
+                  >
+                </b-dropdown>
 
-                  <div class="dropdown">
-                    <button class="dropbtn">SELECT SIZE</button>
-                    <div class="dropdown-content">
-                      <a>LG</a>
-                      <a>SM</a>
-                      <a>SM</a>
-                    </div>
-                  </div>
-                  <div class="dropdown">
-                    <button class="dropbtn">SELECT DELIVERY METHOD</button>
-                    <div class="dropdown-content">
-                      <a>1</a>
-                      <a>2</a>
-                      <a>3</a>
-                    </div>
-                  </div>
-                  <div class="add-cart-1">
-                    <button class="add-cart">
-                      ADD CART
-                    </button>
-                  </div>
-                  <div class="add-cart-1">
-                    <button class="add-cart">
-                      SAVE CHANGES
-                    </button>
-                  </div>
-                </ul>
-              </b-col>
-            </b-row>
-          </b-container>
-        </b-container>
-        <Footer />
-      </div>
-    </div>
+                <p class="title-doyouwanna ">
+                  Status:
+                </p>
+
+                <b-dropdown
+                  size="lg"
+                  split
+                  text="Product Status"
+                  class="m-2"
+                  variant="outline-secondary"
+                >
+                  <b-dropdown-item-button @click="handleStatus(1)"
+                    >Active</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStatus(0)"
+                    >none Active
+                  </b-dropdown-item-button>
+                </b-dropdown>
+                <p class="title-doyouwanna ">
+                  Input stock :
+                </p>
+                <b-dropdown
+                  size="lg"
+                  split
+                  text="Input stock"
+                  class="m-2"
+                  variant="outline-secondary"
+                >
+                  <b-dropdown-item-button @click="handleStok(50)"
+                    >50</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(30)"
+                    >30</b-dropdown-item-button
+                  >
+                  <b-dropdown-item-button @click="handleStok(40)"
+                    >40</b-dropdown-item-button
+                  >
+                </b-dropdown>
+              </div>
+            </div></b-col
+          >
+          <b-col>
+            <b-container class="card-contact">
+              <p></p>
+              <form>
+                <label for="fname" class="contact-1">Name :</label><br />
+                <input type="text" v-model="form.product_name" /><br />
+                <label for="fname" class="contact-1">Price:</label><br />
+                <input type="number" v-model="form.product_price" /><br /><br />
+
+                <p class="contact">Details</p>
+                <label for="fname" class="contact-1">Description :</label><br />
+                <input type="text" v-model="form.product_list" /><br />
+                <label for="lname" class="contact-1">Input Product Size :</label
+                ><br />
+                <p>Click size you want to use for this product</p>
+                <br />
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('L')"
+                  class="type"
+                  >L</b-button
+                >
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('M')"
+                  class="type"
+                  >M</b-button
+                >
+                <b-button
+                  squared
+                  variant="warning"
+                  @click="handleSize('S')"
+                  class="type"
+                  >S</b-button
+                >
+
+                <b-button
+                  outline-secondary
+                  @click="handleSize('1')"
+                  class="type"
+                  >250gr</b-button
+                >
+                <b-button
+                  outline-secondary
+                  @click="handleSize('2')"
+                  class="type"
+                  >300gr</b-button
+                >
+                <b-button
+                  outline-secondary
+                  @click="handleSize('3')"
+                  class="type"
+                  >500gr</b-button
+                >
+                <br />
+                <br />
+
+                <br />
+                <br />
+
+                <button
+                  type="button"
+                  class="save-product"
+                  @click="setproduct(data)"
+                >
+                  Save Product
+                </button>
+              </form></b-container
+            >
+          </b-col>
+        </b-row>
+      </b-container>
+      <br />
+    </b-container>
+    <Footer />
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { mapActions } from 'vuex'
 import Navbar from '../components/_base/Navbar'
 import Footer from '../components/_base/Footer'
-import axios from 'axios'
 export default {
+  name: 'Product',
+
   components: {
     Navbar,
     Footer
   },
+  computed: {
+    rows() {
+      return this.totalRows
+    }
+  },
   data() {
     return {
-      product: [],
+      products: {},
       form: {
         category_id: '',
         product_name: '',
+        product_image: '',
         product_price: '',
         product_size: '',
         product_list: '',
+        product_stok: '',
         product_status: ''
-      }
+      },
+      alert: false,
+      isMsg: '',
+      product_id: '',
+      currentPage: '1',
+      totalRows: 'null',
+      limit: 8,
+      page: 1
     }
   },
   created() {
-    this.getProduct()
+    this.getproductByid(this.$route.params.id)
   },
   methods: {
-    getProduct() {
-      axios
-        .get(
-          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
-        )
-        .then(response => {
-          console.log(response)
-          this.totalRows = response.data.pagination.totalData
-          this.product = response.data.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    ...mapActions(['patchProduct']),
+    deleteProduct(product_id) {
+      console.log(product_id)
     },
-    postProduct() {
-      console.log(this.form)
+    getproductByid(product_id) {
       axios
-        .post('http://localhost:3000/product', this.form)
+        .get(`http://localhost:3000/product/${product_id}`)
         .then(response => {
           console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
+          const {
+            category_id,
+            product_name,
+            product_image,
+            product_list,
+            product_stok,
+            product_price,
+            product_size,
+            product_status
+          } = response.data.data[0]
+          this.form = {
+            category_id,
+            product_name,
+            product_image,
+            product_list,
+            product_stok,
+            product_price,
+            product_size,
+            product_status
+          }
+          console.log(this.form)
         })
         .catch(error => {
           console.log(error.response)
         })
     },
-    //  pr
-    deleteProduct(product_id) {
-      console.log(product_id)
-    },
     setProduct(data) {
       console.log(data)
-      // console.log(this.product_id)
-      // this.form = {
-      //   category_id: 'data.category_id',
-      //   product_name: 'data.product_name',
-      //   product_price: 'data.product_price',
-      //   product_size: 'data.product_size',
-      //   product_list: 'product_list',
-      //   product_status: 'product_status'
-      // }
-      this.form = data
-      this.product_id = data.product_id
+      const setData = {
+        product_id: this.product_id,
+        form: data
+      }
+      this.pacthProduct(setData)
     },
+    // setProduct(data) {
+    //   const data = new FormData()
+    //   data.append('category_id', this.form.category_id)
+    //   data.append('product_name', this.form.product_name)
+    //   data.append('product_image', this.form.product_image)
+    //   data.append('product_list', this.form.product_list)
+    //   data.append('product_stok', this.form.product_stok)
+    //   data.append('product_price', this.form.product_price)
+    //   data.append('product_size', this.form.product_size)
+    //   data.append('product_status', this.form.product_status)
+    //   const setData = {
+    //     product_id: this.product_id,
+    //     form: data
+    //   }
+    //   this.pacthProduct(setData)
+    // },
     pacthProduct() {
       console.log(this.form)
     },
@@ -161,109 +269,174 @@ export default {
       console.log(numberPage)
       this.page = numberPage
       this.getProduct()
+    },
+    handleFile(event) {
+      console.log(event.target.files[0])
+      this.form.product_image = event.target.files[0]
+    },
+    handleSize(size) {
+      console.log(size)
+      this.form.product_size = size
+    },
+    handleStok(stock) {
+      this.form.product_stok = stock
+      console.log(stock)
+    },
+    handlegr() {
+      // this.form.product_size
+    },
+    handleStatus(status) {
+      this.form.product_status = status
+      console.log(status)
+    },
+    chooseFiles() {
+      document.getElementById('fileUpload').click()
+    },
+    handleCategory(category) {
+      console.log(category)
+      this.form.category_id = category
     }
   }
 }
 </script>
-<style>
-.product_detail {
+
+<style scoped>
+.type-delivery {
+  border-radius: 100%;
+  margin-left: 2%;
+  height: 70px;
+  width: 100px;
+  color: white;
+}
+
+.type {
+  border-radius: 100%;
+  margin-left: 2%;
+  height: 60px;
+  width: 60px;
+  color: white;
+}
+.contact-1 {
+  margin-top: 2%;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.title-doyouwanna {
+  margin-top: 7%;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.txt-user-profile {
+  color: white;
+}
+.bg-user {
+  background: white;
+}
+.card {
+  background: white;
+  border-radius: 20px;
+}
+.card-contact {
+  margin-top: 5%;
+  background: white;
+}
+.button-set-profile {
+  margin-left: 8%;
+}
+.m-2,
+.save-product,
+.take-picture,
+.remote-photo,
+.set-password,
+.save-user,
+.cancel-user,
+.logout {
+  color: #ffffff;
+
+  border-radius: 20px;
+  width: 370px;
+  height: 60px;
+  text-align: center;
+}
+.save-product,
+.set-photo,
+.cancel-user {
+  background: #ffba33;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 22px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #6a4029;
+}
+.remote-photo,
+.save-user {
+  background: #6a4029;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 22px;
+}
+
+.set-password,
+.logout {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 27px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.take-picture,
+.colum-user-1 {
   margin-top: 5%;
 }
-.detail-gambar {
-  width: 523px;
-  height: 790px;
-}
-input {
-  outline: 0;
-  width: 100%;
-  padding-top: 5%;
-  border-width: 0 0 2px;
-  border-color: black;
-}
-input:focus {
-  border-color: grey;
-}
-.text-product-name {
-  font-size: x-large;
-  font-family: Poppins;
+
+.take-picture {
+  font-family: Rubik;
   font-style: normal;
-  font-weight: 900;
-  font-size: 65px;
-  line-height: 97px;
-  color: #000000;
-}
-.text-product-price {
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 60px;
-}
-.text-product-list {
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 25px;
-  line-height: 138.84%;
-  /* or 35px */
-  letter-spacing: 0.03em;
-  color: #000000;
+  line-height: 30px;
+  /* identical to box height */
+
+  background: #0b132a;
+  border-radius: 20px;
 }
-.dropbtn {
-  background-color: white;
-  color: #9f9f9f;
-  padding: 16px;
-  font-size: 16px;
-  border: #9f9f9f;
-  cursor: pointer;
+.remote-photo,
+.set-password,
+.save-user,
+.cancel-user,
+.logout {
+  margin-top: 5%;
 }
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdown:hover .dropbtn {
-  background-color: white;
-}
-.Delivery-title {
-  padding: 20%;
-  text-align: center;
+.contact {
   font-family: Poppins;
   font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 25px;
-  line-height: 138.84%;
-  /* or 35px */
-  letter-spacing: 0.02em;
-  color: #000000;
-}
-.add-cart-1 {
-  padding: 2%;
-}
-.add-cart {
-  background-color: pink;
-  width: 500px;
-  height: 50px;
-  border-radius: 15px;
-  background: #ffba33;
+  line-height: 37px;
+  /* identical to box height */
+
+  color: #4f5665;
 }
 </style>

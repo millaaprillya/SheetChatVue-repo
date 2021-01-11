@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Product from '../views/Product.vue'
 
 import aboutProduct from '../views/About.vue'
+import productAsc from '../components/_base/_dashboard/product_asc.vue'
+import productDesc from '../components/_base/_dashboard/product_desc.vue'
 import userHome from '../views/user.vue'
 import orderDetail from '../views/detailOrder.vue'
 import addVoucher from '../views/admin/add_voucher.vue'
@@ -33,7 +35,16 @@ const routes = [
     name: 'Product',
     component: Product
   },
-
+  {
+    path: '/productAsc',
+    name: 'productAsc',
+    component: productAsc
+  },
+  {
+    path: '/productDesc',
+    name: 'productDesc',
+    component: productDesc
+  },
   {
     path: '/aboutProduct/:id',
     name: 'aboutProduct',

@@ -3,18 +3,52 @@
     <div class="centered">
       <Navbar />
       <div>
-        <b-card
-          overlay
-          img-src="https://picsum.photos/900/250/?image=3"
-          img-alt="Card Image"
-          text-variant="white"
-          title="Image Overlay"
-        >
-          <b-card-text>
+        <b-jumbotron class="bg-jb"
+          ><p class="title-dashboard">
             Start Your Day with Coffee and Good Meals
-          </b-card-text>
-        </b-card>
+          </p>
+          <p class="title-dashboard-2">
+            We provide high quality beans, good taste, and healthy meals made by
+            love just for you. Start your day with us for a bigger smile!
+          </p>
+        </b-jumbotron>
       </div>
+      <div></div>
+      <b-container class="bv-example-row">
+        <b-row>
+          <b-col
+            ><img src="../../assets/property/Capture.png" alt="" />
+            <p>90+</p>
+            <p>Staff</p></b-col
+          >
+          <b-col
+            ><img src="../../assets/property/Capture.2.png" alt="" />
+            <p>30+</p>
+            <p>Store</p></b-col
+          >
+          <b-col
+            ><img src="../../assets/property/Capture3.png" alt="" />
+            <p>800+</p>
+            <p>Constumers</p></b-col
+          >
+        </b-row>
+      </b-container>
+      <b-jumbotron class="bg-jb-2">
+        <b-row>
+          <b-col><img src="../../assets/property/dah.jpg" alt=""/></b-col>
+          <b-col><img src="../../assets/property/bg-2.png" alt="" /> </b-col>
+        </b-row>
+      </b-jumbotron>
+      <b-jumbotron class="bg-jb-2">
+        <b-row>
+          <b-col><img src="../../assets/property/map.jpg" alt="" /> </b-col>
+        </b-row>
+      </b-jumbotron>
+      <b-jumbotron class="bg-jb-2">
+        <b-row>
+          <b-col><img src="../../assets/property/yaps.jpg" alt="" /> </b-col>
+        </b-row>
+      </b-jumbotron>
       <Footer />
     </div>
   </div>
@@ -22,7 +56,7 @@
 
 <script>
 // [1] step pertama import komponen
-import Navbar from '../../components/_base/_dashboard/Navbar'
+import Navbar from '../../components/_base/Navbar'
 import Footer from '../../components/_base/Footer'
 
 export default {
@@ -36,6 +70,52 @@ export default {
 </script>
 
 <style scoped>
+.bg-jb {
+  background: url('../../assets/bg/bg-dashboard.png');
+}
+.bg-jb-2 {
+  background: white;
+}
+.title-dashboard {
+  width: 570px;
+  height: 140px;
+  left: 150px;
+  top: 207px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 70px;
+  color: #ffffff;
+}
+.title-dashboard-2 {
+  width: 555px;
+  height: 90px;
+  left: 150px;
+  top: 366.77px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 30px;
+  /* or 150% */
+
+  color: #ffffff;
+}
+.getStarted {
+  width: 250px;
+  height: 60px;
+  left: 150px;
+  top: 489px;
+
+  background: #ffba33;
+  border-radius: 10px;
+}
+.col-info {
+  position: absolute;
+}
 .centered {
   text-align: center;
 }

@@ -23,10 +23,10 @@
             <b-container class="bg-home">
               <div>
                 <ul class="header-menu">
-                  <li>favorite Product</li>
-                  <li>coffee</li>
-                  <li>Non Coffee</li>
-                  <li>Foods</li>
+                  <li @click="categoryFood()">favorite Product</li>
+                  <li @click="categoryFood(1)">coffee</li>
+                  <li @click="categoryFood(2)">Non Coffee</li>
+                  <li @click="categoryFood(3)">Foods</li>
                   <li>Add On</li>
                   <li>
                     <b-dropdown
@@ -36,8 +36,14 @@
                       pill
                       variant="outline-secondary"
                     >
-                      <b-dropdown-item href="#">Harga Terendah</b-dropdown-item>
-                      <b-dropdown-item href="#"
+                      <b-dropdown-item
+                        href="#"
+                        @click="handleSort('product_price ASC')"
+                        >Harga Terendah</b-dropdown-item
+                      >
+                      <b-dropdown-item
+                        href="#"
+                        @click="handleSort('product_price DESC')"
                         >Harga Tertinggi</b-dropdown-item
                       >
                       <b-dropdown-item href="#">Promo</b-dropdown-item>
@@ -50,6 +56,7 @@
                       type="text"
                       placeholder=" Search"
                       aria-label="Search"
+                      @submit.prevent="searchProduct"
                     />
                   </router-link>
                 </form>
@@ -74,7 +81,7 @@
                 v-model="currentPage"
                 :total-rows="rows"
                 :per-page="limit"
-                @change="handlePageChange(2)"
+                @change="handlePageChange"
                 class="pagination"
               ></b-pagination>
             </b-container>
@@ -144,37 +151,8 @@ export default {
     // this.getProducts()
   },
   methods: {
-    ...mapActions(['getProducts']),
-    ...mapMutations(['changePage']),
-    // getProduct() {
-    //   // axios
-    //   //   .get(
-    //   //     `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
-    //   //   )
-    //   //   .then(response => {
-    //   //     console.log(response)
-    //   //     this.totalRows = response.data.pagination.totalData
-    //   //     this.product = response.data.data
-    //   //   })
-    //   //   .catch(error => {
-    //   //     console.log(error)
-    //   //   })
-    // },
-    postProduct() {
-      console.log(this.form)
-      axios
-        .post('http://localhost:3000/product', this.form)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-    },
-    //  pr
+    ...mapActions(['getProducts', 'searchProducts']),
+    ...mapMutations(['changePage', 'changeSort', 'changeCategory']),
     deleteProduct(item) {
       axios
         .delete(`http://localhost:3000/product/${item.product_id}`)
@@ -183,6 +161,7 @@ export default {
           this.alert = true
           this.isMsg = response.data.msg
           this.getProduct()
+          this.$router.push('/')
         })
         .catch(error => {
           console.log(error.response)
@@ -210,12 +189,23 @@ export default {
         name: 'aboutProduct',
         params: { id: data.product_id }
       })
+    },
+    categoryFood(category) {
+      this.changeCategory(category)
+    },
+    handleSort(sort) {
+      this.changeSort(sort)
+      this.getProducts()
+    },
+
+    addProductform() {
+      this.$router.push({
+        name: 'addProduct'
+      })
+    },
+    searchProduct() {
+      this.searchProducts(this.search)
     }
-  },
-  addProductform() {
-    this.$router.push({
-      name: 'addProduct'
-    })
   }
 }
 </script>
@@ -261,6 +251,7 @@ export default {
   color: #6a4029;
 }
 .header-menu li {
+  margin-top: 4%;
   margin-left: 5%;
   font-family: Poppins;
   font-family: Rubik;

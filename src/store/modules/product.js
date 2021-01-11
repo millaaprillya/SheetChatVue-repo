@@ -2,56 +2,36 @@ import axios from 'axios'
 
 export default {
   state: {
-    form: {
-      category_id: '',
-      product_name: '',
-      product_image: '',
-      product_price: '',
-      product_size: '',
-      product_list: '',
-      product_stok: '',
-      product_status: ''
-    },
-    limit: 8,
+    limit: 6,
     page: 1,
     products: [],
     totalRows: null,
+    product_id: '',
     search: '',
-    sort: ''
+    sort: '',
+    category: ''
+    // sort1: 'product_price ASC',
+    // sort2: 'product_price DESC'
   },
   mutations: {
     setProduct(state, payload) {
+      // angep aja ini state ini ngambil dari sini
       // payload =response.data
-      state.products = payload.data
+      state.products = payload.data // nah si payload ini nampung data dari state
       state.totalRows = payload.pagination.totalData
     },
     changePage(state, payload) {
       state.page = payload
     },
-    addpostProduct(state, payload) {
-      const {
-        category_id,
-        product_name,
-        product_image,
-        product_price,
-        product_size,
-        product_list,
-        product_stok,
-        product_status
-      } = state.form
-      const data = new FormData()
-      data.append('category_id', category_id)
-      data.append('product_name', product_name)
-      data.append('product_image', product_image)
-      data.append('product_price', product_price)
-      data.append('product_size', product_size)
-      data.append('product_list', product_list)
-      data.append('product_stok', product_stok)
-      data.append('product_status', product_status)
-      for (var pair of data.entries()) {
-        console.log(pair[0] + ', ' + pair[1])
-      }
-      state.form = payload.data
+    changeSort(state, payload) {
+      state.sort = payload
+    },
+    changeSearch(state, payload) {
+      state.search = payload
+    },
+    changeCategory(state, payload) {
+      state.category = payload
+      state.products = payload.data // na
     }
   },
   actions: {
@@ -59,7 +39,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}`
+            `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}&search=${context.state.search}&sort=${context.state.sort}`
           )
           .then(response => {
             // console.log(response)
@@ -74,12 +54,30 @@ export default {
           })
       })
     },
-    postProduct(context, payload) {
+    getProductsAsc(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}&sort=${context.state.sort1}`
+          )
+          .then(response => {
+            // console.log(response)
+            context.commit('setProduct', response.data)
+            resolve(response)
+            //   state.totalRows = response.data.pagination.totalData
+            //   state.product = response.data.data
+          })
+          .catch(error => {
+            console.log(error.response)
+            reject(error)
+          })
+      })
+    },
+    addProduct(context, payload) {
       return new Promise((resolve, reject) => {
         axios
           .post('http://localhost:3000/product', payload)
           .then(response => {
-            context.commit('addpostProduct', response.data.data)
             console.log(response.data)
             resolve(response.data.data)
           })
@@ -87,21 +85,38 @@ export default {
             reject(error.response)
           })
       })
+    },
+    patchProduct(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(
+            `http://localhost:3000/product'${payload.product_id}`,
+            payload.form
+          )
+          .then(response => {
+            resolve(response.data)
+          })
+          .catch(error => {
+            reject(error.response)
+          })
+      })
+    },
+    productDeleted(context, payload) {
+      //  context itu di ambil dari state
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(`http://localhost:3000/product/${payload.product_id}`)
+          .then(response => {
+            console.log(response)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error.response)
+          })
+      })
     }
   },
-  deleteProduct(context, payload) {
-    return new Promise((resolve, reject) => {
-      axios.delete(`http://localhost:300o/product/`, payload)
-      console
-        .log(payload, context)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          reject('Bad Request', `${error}`)
-        })
-    })
-  },
+
   getters: {
     getPageProduct(state) {
       return state.page

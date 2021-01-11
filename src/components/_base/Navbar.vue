@@ -9,7 +9,7 @@
         <ul class="header-menu">
           <li sm="12"><router-link to="/">Home</router-link></li>
           <li sm="12"><router-link to="/product">Product</router-link></li>
-          <li sm="12">Your Cart</li>
+          <li sm="12">Cart</li>
           <li sm="12">History</li>
         </ul></b-col
       >

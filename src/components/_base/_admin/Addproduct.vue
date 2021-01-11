@@ -1,19 +1,11 @@
 <template>
   <div>
     <b-container fluid class="bg-user">
-      <b-col class="txt-user-profile"> <p>USER PROFILE</p></b-col>
+      <b-col class="txt-user-profile"> <p>Add Product</p></b-col>
       <b-container class="card">
         <b-row>
           <b-col>
             <div class="colum-user-1 ">
-              <div class="image-view-user">
-                <center>
-                  <img
-                    src="../../../assets/property/Ellipse 211.png"
-                    class="rounded-circle"
-                  />
-                </center>
-              </div>
               <div class="button-set-profile">
                 <!-- <button type="file" class="take-picture">Choose File</button><br /> -->
                 <button type="file" class="cancel-user" @click="chooseFiles()">
@@ -25,6 +17,7 @@
                   hidden
                   @change="handleFile"
                 />
+                <br />
                 <label for="fname" class="contact-1">Category food :</label
                 ><br />
                 <b-dropdown
@@ -37,10 +30,10 @@
                   <b-dropdown-item-button @click="handleCategory(1)"
                     >Coffe</b-dropdown-item-button
                   >
-                  <b-dropdown-item-button @click="handleStok(2)"
+                  <b-dropdown-item-button @click="handleCategory(2)"
                     >Non Coffe</b-dropdown-item-button
                   >
-                  <b-dropdown-item-button @click="handleStok(3)"
+                  <b-dropdown-item-button @click="handleCategory(3)"
                     >Food</b-dropdown-item-button
                   >
                 </b-dropdown>
@@ -145,26 +138,13 @@
                 <br />
                 <br />
 
-                <label for="lname" class="contact-1"
-                  >Input delivery methods :</label
-                >
-                <p>Click delivery you want to use for this product</p>
-                <b-button squared variant="warning" class="type-delivery"
-                  >Home Delivery</b-button
-                >
-                <b-button squared variant="warning" class="type-delivery"
-                  >Dine in</b-button
-                >
-                <b-button squared variant="warning" class="type-delivery"
-                  >Take away</b-button
-                >
                 <br />
                 <br />
 
                 <button
                   type="button"
                   class="save-product"
-                  @click="postProduct()"
+                  @click="postProduct(data)"
                 >
                   Save Product
                 </button>
@@ -192,7 +172,7 @@ export default {
   },
   data() {
     return {
-      product: [],
+      products: [],
       form: {
         category_id: '',
         product_name: '',
@@ -213,48 +193,22 @@ export default {
     }
   },
   created() {
-    this.getProduct()
+    // this.getProducts()
   },
   methods: {
-    ...mapActions(['postProduct']),
+    ...mapActions(['addProduct']),
     postProduct() {
-      console.log(this.form)
-      const {
-        category_id,
-        product_name,
-        product_image,
-        product_price,
-        product_size,
-        product_list,
-        product_stok,
-        product_status
-      } = this.form
       const data = new FormData()
-      data.append('category_id', category_id)
-      data.append('product_name', product_name)
-      data.append('product_image', product_image)
-      data.append('product_price', product_price)
-      data.append('product_size', product_size)
-      data.append('product_list', product_list)
-      data.append('product_stok', product_stok)
-      data.append('product_status', product_status)
-      this.postProduct(data)
-      for (var pair of data.entries()) {
-        console.log(pair[0] + ', ' + pair[1])
-      }
-      // this.postProduct(data)
-      //   // this.postProduct(data)
-      //   // axios
-      //   //   .post('http://localhost:3000/product', data)
-      //   //   .then(response => {
-      //   //     console.log(response)
-      //   //     this.alert = true
-      //   //     this.isMsg = response.data.msg
-      //   //     this.getProduct()
-      //   //   })
-      //   //   .catch(error => {
-      //   //     console.log(error.response)
-      //   //   })
+      console.log(this.form)
+      data.append('category_id', this.form.category_id)
+      data.append('product_name', this.form.product_name)
+      data.append('product_image', this.form.product_image)
+      data.append('product_list', this.form.product_list)
+      data.append('product_stok', this.form.product_stok)
+      data.append('product_price', this.form.product_price)
+      data.append('product_size', this.form.product_size)
+      data.append('product_status', this.form.product_status)
+      this.addProduct(data)
     },
     //  pr
     deleteProduct(product_id) {
@@ -283,7 +237,7 @@ export default {
       this.getProduct()
     },
     handleFile(event) {
-      console.log(event)
+      console.log(event.target.files[0])
       this.form.product_image = event.target.files[0]
     },
     handleSize(size) {
@@ -305,7 +259,8 @@ export default {
       document.getElementById('fileUpload').click()
     },
     handleCategory(category) {
-      this.form.category = category
+      console.log(category)
+      this.form.category_id = category
     }
   }
 }
