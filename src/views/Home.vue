@@ -56,7 +56,7 @@
                       type="text"
                       placeholder=" Search"
                       aria-label="Search"
-                      @submit.prevent="searchProduct"
+                      @keydown.enter.prevent="searchProduct"
                     />
                   </router-link>
                 </form>
@@ -142,17 +142,20 @@ export default {
       isMsg: '',
       product_id: '',
       currentPage: '1'
-      // totalRows: 'null',
-      // limit: 8,
-      // page: 1
     }
   },
   created() {
     // this.getProducts()
   },
   methods: {
-    ...mapActions(['getProducts', 'searchProducts']),
-    ...mapMutations(['changePage', 'changeSort', 'changeCategory']),
+    ...mapActions(['getProducts']),
+    ...mapMutations([
+      'changePage',
+      'changeSort',
+      'changeCategory',
+      'searchProducts',
+      'getVoucher'
+    ]),
     deleteProduct(item) {
       axios
         .delete(`http://localhost:3000/product/${item.product_id}`)
@@ -166,12 +169,6 @@ export default {
         .catch(error => {
           console.log(error.response)
         })
-    },
-    setProduct(data) {
-      console.log(data)
-
-      this.form = data
-      this.product_id = data.product_id
     },
     pacthProduct() {
       console.log(this.form)
@@ -203,8 +200,9 @@ export default {
         name: 'addProduct'
       })
     },
-    searchProduct() {
-      this.searchProducts(this.search)
+    searchProduct(search) {
+      this.searchProducts(search.target.value)
+      this.getProducts()
     }
   }
 }
@@ -251,7 +249,7 @@ export default {
   color: #6a4029;
 }
 .header-menu li {
-  margin-top: 4%;
+  margin-top: 1%;
   margin-left: 5%;
   font-family: Poppins;
   font-family: Rubik;

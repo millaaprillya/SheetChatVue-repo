@@ -56,7 +56,7 @@
 
 <script>
 // [1] step pertama import komponen
-import Navbar from '../../components/_base/Navbar'
+import Navbar from '../../components/_base/_dashboard/Navbar'
 import Footer from '../../components/_base/Footer'
 
 export default {

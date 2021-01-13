@@ -20,7 +20,7 @@ export default {
     getVoucher(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get('http://localhost:3000/voucher')
+          .get(`http://localhost:3000/voucher=${context.state.voucher}`)
           .then(response => {
             // console.log(response)
             context.commit('setVoucher', response.data)

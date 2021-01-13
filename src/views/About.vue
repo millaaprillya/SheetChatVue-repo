@@ -7,8 +7,15 @@
         <b-row>
           <b-col>
             <div class="colum-user-1 ">
+              <!-- <img
+                :src="'http://localhost:3000/' + item.product_image"
+                class="rounded-circle"
+                width="125"
+                height="100"
+                alt="..."
+              /> -->
+
               <div class="button-set-profile">
-                <!-- <button type="file" class="take-picture">Choose File</button><br /> -->
                 <button type="file" class="cancel-user" @click="chooseFiles()">
                   Select From Galery
                 </button>
@@ -145,7 +152,7 @@
                 <button
                   type="button"
                   class="save-product"
-                  @click="setproduct(data)"
+                  @click="setProduct(form)"
                 >
                   Save Product
                 </button>
@@ -162,7 +169,7 @@
 
 <script>
 import axios from 'axios'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Navbar from '../components/_base/Navbar'
 import Footer from '../components/_base/Footer'
 export default {
@@ -173,6 +180,9 @@ export default {
     Footer
   },
   computed: {
+    ...mapGetters({
+      products: 'getProduct'
+    }),
     rows() {
       return this.totalRows
     }
@@ -200,10 +210,11 @@ export default {
     }
   },
   created() {
+    this.product_id = this.$route.params.id
     this.getproductByid(this.$route.params.id)
   },
   methods: {
-    ...mapActions(['patchProduct']),
+    ...mapActions(['getProducts', 'patchProduct']),
     deleteProduct(product_id) {
       console.log(product_id)
     },
@@ -232,39 +243,43 @@ export default {
             product_size,
             product_status
           }
-          console.log(this.form)
+          const data = {
+            product_id: this.product_id,
+            form: data
+          }
+          // this.patchProduct(data)
         })
         .catch(error => {
           console.log(error.response)
         })
     },
-    setProduct(data) {
-      console.log(data)
-      const setData = {
-        product_id: this.product_id,
-        form: data
-      }
-      this.pacthProduct(setData)
+
+    setProduct() {
+      const data = new FormData()
+      data.append('category_id', this.form.category_id)
+      data.append('product_name', this.form.product_name)
+      data.append('product_image', this.form.product_image)
+      data.append('product_list', this.form.product_list)
+      data.append('product_stok', this.form.product_stok)
+      data.append('product_price', this.form.product_price)
+      data.append('product_size', this.form.product_size)
+      data.append('product_status', this.form.product_status)
+      // for (var pair of data.entries()) {
+      //   console.log(pair[0] + ', ' + pair[1])
+      // }
+      let dataUpdate = { dataSet: this.form, id: this.product_id }
+      // console.log(dataUpdate)
+      this.patchProduct(dataUpdate)
+        .then(() => {
+          this.getProduct()
+          // this.makeToast('Product Updated', 'Success', 'success')
+        })
+        .catch(() => {
+          // this.makeToast('Failed update product', 'Error', 'danger')
+        })
+      this.$bvModal.hide('add-product-modal')
     },
-    // setProduct(data) {
-    //   const data = new FormData()
-    //   data.append('category_id', this.form.category_id)
-    //   data.append('product_name', this.form.product_name)
-    //   data.append('product_image', this.form.product_image)
-    //   data.append('product_list', this.form.product_list)
-    //   data.append('product_stok', this.form.product_stok)
-    //   data.append('product_price', this.form.product_price)
-    //   data.append('product_size', this.form.product_size)
-    //   data.append('product_status', this.form.product_status)
-    //   const setData = {
-    //     product_id: this.product_id,
-    //     form: data
-    //   }
-    //   this.pacthProduct(setData)
-    // },
-    pacthProduct() {
-      console.log(this.form)
-    },
+
     handlePageChange(numberPage) {
       console.log(numberPage)
       this.page = numberPage
@@ -290,7 +305,7 @@ export default {
       console.log(status)
     },
     chooseFiles() {
-      document.getElementById('fileUpload').click()
+      document.getElementById('fileUpdate').click()
     },
     handleCategory(category) {
       console.log(category)

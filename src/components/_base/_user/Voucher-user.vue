@@ -5,17 +5,14 @@
         <h3>VOUCHER</h3>
       </div>
       <img
-        src="https://media0.giphy.com/media/3o7TKBTR9Lu1qqCGg8/giphy.gif"
+        src="https://media.npr.org/assets/img/2017/06/09/img_1210_custom-42a7d8b55991938569dd446133e41c67eac56e3a.jpg"
         alt="Avatar"
         style="width:100%;"
       />
       <div class="container" style="background-color:white">
         <h2></h2>
         <p>
-          Lorem ipsum dolor sit amet, et nam pertinax gloriatur. Sea te minim
-          soleat senserit, ex quo luptatum tacimates voluptatum, salutandi
-          delicatissimi eam ea. In sed nullam laboramus appellantur, mei ei
-          omnis dolorem mnesarchum.
+          Promo for you this for Happy new Year
         </p>
       </div>
       <div class="container">
@@ -162,7 +159,7 @@ export default {
   line-height: 30px;
   /* identical to box height, or 187% */
 
-  color: #4f5665;
+  color: brown;
 }
 .body {
   font-family: Arial;
@@ -178,11 +175,11 @@ export default {
 
 .containerr {
   padding: 2px 16px;
-  background-color: #f1f1f1;
+  background-color: yellow;
 }
 
 .promo {
-  background: #ccc;
+  background: brown;
   padding: 3px;
 }
 

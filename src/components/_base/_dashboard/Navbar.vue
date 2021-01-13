@@ -6,15 +6,15 @@
       >
       <b-col xl="6" lg="4" md="12" sm="12">
         <ul class="header-menu">
-          <li sm="12"><router-link to="/">Home</router-link></li>
+          <li sm="12">Home</li>
           <li sm="12"><router-link to="/product">Product</router-link></li>
           <li sm="12">Your Cart</li>
           <li sm="12">History</li>
         </ul></b-col
       >
       <b-col xl="2" lg="4" md="12" sm="12" class="sc"> </b-col>
-      <b-col xl="2" lg="12" md="12" sm="12" class="user">
-        <button @click="handleLogout">Logout</button>
+      <b-col class="register">
+        <b-button variant="warning" @click="loginUser()">LOGIN</b-button>
       </b-col>
     </b-row>
   </b-container>

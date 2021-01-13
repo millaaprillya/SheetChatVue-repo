@@ -40,7 +40,7 @@
                   >
                     <div class="card-1 mr-5">
                       <img
-                        src="https://acegif.com/wp-content/uploads/spaghetti.gif"
+                        :src="'http://localhost:3000/' + item.product_image"
                         class="rounded-circle"
                         width="125"
                         height="100"
@@ -81,7 +81,7 @@
 
 <script>
 // [1] step pertama import komponen
-import Navbar from '../components/_base/Navbar'
+import Navbar from '../components/_base/_dashboard/Navbar'
 import Footer from '../components/_base/Footer'
 import Voucher from '../components/_base/_user/Voucher-user'
 import axios from 'axios'
@@ -126,7 +126,7 @@ export default {
     getProduct() {
       axios
         .get(
-          `http://localhost:3000/product?page=${this.page}&limit=${this.limit}`
+          `${process.env.VUE_APP_URL}product?page=${this.page}&limit=${this.limit}`
         )
         .then(response => {
           console.log(response)
@@ -140,7 +140,7 @@ export default {
     postProduct() {
       console.log(this.form)
       axios
-        .post('http://localhost:3000/product', this.form)
+        .post(`${process.env.VUE_APP_URL}product`, this.form)
         .then(response => {
           console.log(response)
           this.alert = true

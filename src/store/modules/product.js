@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   state: {
-    limit: 6,
+    limit: 8,
     page: 1,
     products: [],
     totalRows: null,
@@ -26,7 +26,7 @@ export default {
     changeSort(state, payload) {
       state.sort = payload
     },
-    changeSearch(state, payload) {
+    searchProducts(state, payload) {
       state.search = payload
     },
     changeCategory(state, payload) {
@@ -36,9 +36,11 @@ export default {
   },
   actions: {
     getProducts(context) {
+      console.log(context.state)
       return new Promise((resolve, reject) => {
         axios
           .get(
+            // http://localhost:3000/product?limit=5&page=1&sort=product_price DESC&search=bubur
             `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}&search=${context.state.search}&sort=${context.state.sort}`
           )
           .then(response => {
@@ -54,11 +56,13 @@ export default {
           })
       })
     },
-    getProductsAsc(context) {
+    getProductsBycategory(context) {
+      console.log(context.state)
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}&sort=${context.state.sort1}`
+            // http://localhost:3000/product?limit=5&page=1&sort=product_price DESC&search=bubur
+            `http://localhost:3000/product?page=${context.state.page}&limit=${context.state.limit}&search=${context.state.search}&sort=${context.state.sort}`
           )
           .then(response => {
             // console.log(response)
@@ -89,12 +93,10 @@ export default {
     patchProduct(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .patch(
-            `http://localhost:3000/product'${payload.product_id}`,
-            payload.form
-          )
+          .patch(`http://localhost:3000/product/${payload.id}`, payload.dataSet)
           .then(response => {
-            resolve(response.data)
+            context.commit('setProduct', response.dataSet)
+            resolve(response.dataSet)
           })
           .catch(error => {
             reject(error.response)
@@ -102,6 +104,7 @@ export default {
       })
     },
     productDeleted(context, payload) {
+      console.log(payload)
       //  context itu di ambil dari state
       return new Promise((resolve, reject) => {
         axios
@@ -132,6 +135,9 @@ export default {
     },
     getAllDataState(state) {
       return state
+    },
+    getProduct(state) {
+      return state.products
     }
   }
 }
