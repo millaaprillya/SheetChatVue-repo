@@ -1,90 +1,42 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Product from '../views/Product.vue'
-
-import aboutProduct from '../views/About.vue'
-import productAsc from '../components/_base/_dashboard/product_asc.vue'
-import productDesc from '../components/_base/_dashboard/product_desc.vue'
-import userHome from '../views/user.vue'
-import orderDetail from '../views/detailOrder.vue'
-import addVoucher from '../views/admin/add_voucher.vue'
+import Home from '../views/Home/dashboard.vue'
+import maps from '../components/profile/maps.vue'
 import login from '../views/auth/login.vue'
 import register from '../views/auth/register.vue'
-import user from '../views/auth/user.vue'
-import dashboard from '../views/dasboard/dashboard.vue'
-import payment from '../views/admin/payment'
-import addProduct from '../components/_base/_admin/Addproduct.vue'
+import profile from '../components/profile/profile.vue'
+import contact from '../components/profile/contact.vue'
 import store from '../store/index'
 
 Vue.use(VueRouter)
 const routes = [
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: dashboard
-  },
   {
     path: '/',
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
   },
-  {
-    path: '/product',
-    name: 'Product',
-    component: Product
-  },
-  {
-    path: '/productAsc',
-    name: 'productAsc',
-    component: productAsc
-  },
-  {
-    path: '/productDesc',
-    name: 'productDesc',
-    component: productDesc
-  },
-  {
-    path: '/aboutProduct/:id',
-    name: 'aboutProduct',
-    component: aboutProduct
-  },
-  {
-    path: '/payment/:id',
-    name: 'payment',
-    component: payment
-  },
-  {
-    path: '/addVoucher/',
-    name: 'addVoucher',
-    component: addVoucher
-  },
-  {
-    path: '/userHome/',
-    name: 'userHome',
-    component: userHome
-  },
-  {
-    path: '/orderDetail/',
-    name: 'orderDetail',
-    component: orderDetail,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/addProduct/',
-    name: 'addProudct',
-    component: addProduct
-  },
+
   {
     path: '/register',
     name: 'register',
     component: register
   },
+
   {
-    path: '/user',
-    name: 'user',
-    component: user
+    path: '/profile',
+    name: 'profile',
+    component: profile
+  },
+  {
+    path: '/maps',
+    name: 'maps',
+    component: maps
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: contact
   },
   {
     path: '/login/',

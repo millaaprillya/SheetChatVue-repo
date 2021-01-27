@@ -1,89 +1,145 @@
 <template>
-  <div>
-    <b-container fluid>
-      <b-row>
-        <b-col class="col-1-picture">Column</b-col>
-        <b-col class="col-1-login">
-          <b-row>
-            <b-col>
-              <div class="logo">
-                <b-col><img src="../../assets/logo.png" />CoffeShop </b-col>
-              </div>
-            </b-col>
-            <b-col class="register">
-              <b-button variant="warning" @click="registerUser()"
-                >Register</b-button
-              >
-            </b-col>
-          </b-row>
-          <b-col class="login">
-            <center class="login-text">LOGIN</center>
-            <b-form
-              @submit.prevent="onSubmit"
-              @reset.prevent="onReset"
-              class="login-1"
-            >
-              <label for="fname" class="label-login">Email adress:</label><br />
-              <input
-                type="email"
-                v-model="form.user_email"
-                placeholder="Input Your Email ..."
-                class="login-input"
-              /><br />
-              <label for="fname" class="label-login">Password :</label><br />
-              <input
-                type="password"
-                v-model="form.user_password"
-                placeholder="Input Your Password ..."
-                class="login-input"
-              />
-              <br />
-              <br />
-              <p>Forgot Password !</p>
-              <div class="button-login">
-                <b-col
-                  ><button type="buttom" class="login-buttom">
-                    Login
-                  </button></b-col
-                >
-                <br />
-                <b-col>
-                  <button type="buttom" class="sign-login">
-                    Login with Google
-                  </button></b-col
-                >
-              </div>
+  <div class="login">
+    <b-row align-h="center" align-v="center">
+      <b-col>
+        <b-alert
+          show
+          variant="danger"
+          v-if="isError"
+          dismissible
+          @dismissed="closeAlert"
+          >{{ error }}</b-alert
+        >
+        <b-card border-variant="white">
+          <b-card-header
+            header-bg-variant="white"
+            header-border-variant="white"
+          >
+            <b-card-text>
+              <h1>Login</h1>
+            </b-card-text>
+            <b-card-text>
+              <p class="text-left">Hi, Welcome back!</p>
+            </b-card-text>
+          </b-card-header>
+          <b-card-body>
+            <b-form @submit.prevent="onSubmit">
+              <b-form-group id="input-group-1">
+                <label for="input-1">Email</label>
+                <b-form-input
+                  id="input-1"
+                  type="email"
+                  size="sm"
+                  required
+                  v-model="form.user_email"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group id="input-group-2">
+                <label for="input-2">Password</label>
+                <b-form-input
+                  id="input-2"
+                  type="password"
+                  size="sm"
+                  required
+                  v-model="form.user_password"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-card-text>
+                <p class="text-right">Forgot Password?</p>
+              </b-card-text>
+
+              <b-button type="submit" block>Submit</b-button>
             </b-form>
-          </b-col>
-        </b-col>
-      </b-row>
-    </b-container>
-    <Footer />
+          </b-card-body>
+          <b-card-footer
+            footer-bg-variant="white"
+            footer-border-variant="white"
+          >
+            <b-card-text>
+              <p class="text-center">
+                Don't have an account?
+                <router-link to="/register">Sign Up</router-link>
+              </p>
+            </b-card-text>
+          </b-card-footer>
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
+<style scoped>
+.login {
+  overflow: hidden;
+}
+.row {
+  background: #f6f6f6;
+  height: 100vh;
+}
+.col {
+  max-width: 30rem;
+}
+.card {
+  border-radius: 30px;
+  box-shadow: 0px 20px 20px rgba(126, 152, 223, 0.05);
+}
+.card-header h1 {
+  font-weight: 500;
+  font-size: 22px;
+  text-align: center;
+  color: #7e98df;
+}
+.card-header .text-left {
+  font-size: 14px;
+  color: #232323;
+  margin: 0;
+}
+.card-body .text-right {
+  font-size: 16px;
+  color: #7e98df;
+}
+.form-control {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #232323;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: transparent;
+}
+.form-group label {
+  font-size: 14px;
+  color: #848484;
+  opacity: 0.75;
+}
+.btn-secondary {
+  background-color: #7e98df;
+  border-radius: 30px;
+  border: transparent;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0.8em;
+}
+.card-footer .text-center {
+  font-size: 14px;
+  color: #313131;
+}
+</style>
+
 <script>
-import Footer from '../../components/_base/Footer'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
-  name: 'login',
-  components: {
-    Footer
-  },
-  data() {
-    return {
-      form: {
-        user_email: '',
-        user_password: ''
-      }
-    }
-  },
-  computed: {
-    ...mapState(['name']),
-    ...mapState({ dataName: 'name' })
-  },
+  name: 'Login',
+  data: () => ({
+    form: {
+      user_email: '',
+      user_password: ''
+    },
+    isError: false,
+    error: ''
+  }),
   methods: {
-    // mapAction & mapMutation
     ...mapActions(['login']),
     onSubmit() {
       this.login(this.form)
@@ -92,96 +148,13 @@ export default {
           this.$router.push('/')
         })
         .catch(error => {
-          // console.log(error.response)
-          alert(error.data.msg)
+          this.isError = true
+          this.error = error
         })
     },
-    onReset() {
-      this.form = {
-        user_email: '',
-        user_password: ''
-      }
-    },
-    registerUser() {
-      this.$router.push({
-        name: 'register'
-      })
+    closeAlert() {
+      this.isError = false
     }
   }
 }
 </script>
-
-<style>
-.col-1-picture {
-  height: 700px;
-  width: 500px;
-  background: url('../../assets/bg/bg-login.png');
-}
-.col-1-login {
-  margin: 2%;
-}
-.logo {
-  font-family: 'Kalam', cursive;
-  font-size: 100%;
-  text-align: left;
-}
-.register {
-  text-align: right;
-}
-.register-text {
-  border-radius: 20px;
-  background: violet;
-}
-.login {
-  margin-top: 10%;
-}
-.login-text {
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 35px;
-  line-height: 41px;
-
-  color: #6a4029;
-}
-.login-1 {
-  margin-top: 3%;
-  margin-left: 10%;
-  margin-right: 10%;
-}
-.login-input {
-  width: 100%;
-  height: 10%;
-  background: #ffffff;
-  border: 1px solid #4f5665;
-  box-sizing: border-box;
-  border-radius: 20px;
-}
-.label-login {
-  margin-top: 5%;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-
-  color: #4f5665;
-}
-.button-login {
-  margin-top: 5%;
-}
-.login-buttom {
-  width: 550px;
-  height: 70px;
-  background: #ffba33;
-  box-shadow: 0px 6px 20px rgba(255, 186, 51, 0.4);
-  border-radius: 20px;
-}
-.sign-login {
-  width: 550px;
-  height: 70px;
-  background: grey;
-  box-shadow: 0px 6px 20px rgba(255, 186, 51, 0.4);
-  border-radius: 20px;
-}
-</style>

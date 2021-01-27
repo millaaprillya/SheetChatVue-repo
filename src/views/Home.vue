@@ -1,360 +1,213 @@
 <template>
-  <div class="product">
-    <div class="centered">
-      <Navbar />
-      <b-container fluid>
-        <b-row clas s="sidebar">
-          <b-col xl="4" lg="4" md="12" sm="12" class="voucher-container">
-            <b-container>
-              <b-card-group class="border-class">
-                <center>
-                  <ul>
-                    <center class="info-promo">Voucher For You</center>
-                    <center class="info-promo-1">
-                      Coupons will be updated every weeks. Check them out!
-                    </center>
-                    <Voucher />
-                  </ul>
-                </center>
-              </b-card-group>
-            </b-container>
-          </b-col>
-          <b-col xl="8" lg="8" md="12" sm="12">
-            <b-container class="bg-home">
-              <div>
-                <ul class="header-menu">
-                  <li @click="categoryFood()">favorite Product</li>
-                  <li @click="categoryFood(1)">coffee</li>
-                  <li @click="categoryFood(2)">Non Coffee</li>
-                  <li @click="categoryFood(3)">Foods</li>
-                  <li>Add On</li>
-                  <li>
-                    <b-dropdown
-                      id="dropdown-dropright"
-                      dropright
-                      text="For You"
-                      pill
-                      variant="outline-secondary"
-                    >
-                      <b-dropdown-item
-                        href="#"
-                        @click="handleSort('product_price ASC')"
-                        >Harga Terendah</b-dropdown-item
-                      >
-                      <b-dropdown-item
-                        href="#"
-                        @click="handleSort('product_price DESC')"
-                        >Harga Tertinggi</b-dropdown-item
-                      >
-                      <b-dropdown-item href="#">Promo</b-dropdown-item>
-                    </b-dropdown>
-                  </li>
-                </ul>
-                <form class="form-inline" xl="2" lg="12" md="12" sm="12">
-                  <router-link to="/">
-                    <input
-                      type="text"
-                      placeholder=" Search"
-                      aria-label="Search"
-                      @keydown.enter.prevent="searchProduct"
-                    />
-                  </router-link>
-                </form>
-              </div>
-              <b-container class="bv-example-row">
-                <Card />
-                <div>
-                  <div>
-                    <div>
-                      <b-button v-b-modal.modal-xl squared variant="warning"
-                        >ADD PRODUCT</b-button
-                      >
-                      <b-modal id="modal-xl" size="xl" title="ADD DATA PRODUCT"
-                        ><Addproduct
-                      /></b-modal>
-                    </div>
-                  </div>
-                </div>
-              </b-container>
-
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="limit"
-                @change="handlePageChange"
-                class="pagination"
-              ></b-pagination>
-            </b-container>
-          </b-col>
-        </b-row>
-        <Footer />
-      </b-container>
-    </div>
-  </div>
+  <b-container class="bv-example-row">
+    <b-form-group>
+      <b-form-select class="mb-3" v-model="room" @change="selectRoom">
+        <b-form-select-option :value="null"
+          >Please select Room</b-form-select-option
+        >
+        <b-form-select-option value="html">HTML</b-form-select-option>
+        <b-form-select-option value="css">CSS</b-form-select-option>
+        <b-form-select-option value="js">JS</b-form-select-option>
+      </b-form-select>
+    </b-form-group>
+    <b-row>
+      <b-col cols="2">
+        <div class="chat">
+          <div class="chat-window">
+            <p class="room">User 1</p>
+            <hr />
+            <p class="room">User 2</p>
+            <hr />
+          </div>
+        </div>
+      </b-col>
+      <b-col cols="10">
+        <div class="chat">
+          <div class="chat-window">
+            <div class="output">
+              <p v-if="typing.isTyping">
+                <em>{{ typing.username }} is typing a message...</em>
+              </p>
+              <p v-for="(value, index) in messages" :key="index">
+                <strong>{{ value.username }} :</strong>
+                {{ value.message }}
+              </p>
+            </div>
+          </div>
+          <input
+            class="message"
+            v-model="message"
+            type="text"
+            placeholder="Message"
+          />
+          <button class="send" @click="sendMessage">Send</button>
+        </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-// [1] step pertama import komponen
-import Navbar from '../components/_base/Navbar'
-import Footer from '../components/_base/Footer'
-import Voucher from '../components/_base/_user/Voucher-user'
-import Card from '../components/_base/_admin/_card'
-import Addproduct from '../components/_base/_admin/Addproduct'
-import axios from 'axios'
-
-import { mapGetters, mapActions, mapMutations } from 'vuex'
-
+import io from 'socket.io-client'
 export default {
-  name: 'Product',
-  // [2] step 2 mendaftarkan komponen yang sudah kita import
-  components: {
-    Navbar,
-    Footer,
-    Voucher,
-    Addproduct,
-    Card
-  },
-  computed: {
-    ...mapGetters({
-      products: 'getDataProduct',
-      page: 'getPageProduct',
-      limit: 'getLimitProduct',
-      rows: 'getTotalRowsProduct'
-    }),
-    // rows() {
-    //   return this.totalRows
-    // },
-    ...mapGetters({ user: 'setUser' })
-  },
+  name: 'Chat',
   data() {
     return {
-      product: [],
-      form: {
-        category_id: '',
-        product_name: '',
-        product_image: '',
-        product_price: '',
-        product_size: '',
-        product_list: '',
-        product_status: ''
-      },
-      alert: false,
-      isMsg: '',
-      product_id: '',
-      currentPage: '1'
+      socket: io('http://localhost:3000'),
+      username: '',
+      message: '',
+      messages: [],
+      room: '',
+      oldRoom: '',
+      typing: {
+        isTyping: false
+      }
+    }
+  },
+  watch: {
+    message(value) {
+      value
+        ? this.socket.emit('typing', {
+            username: this.username,
+            room: this.room,
+            isTyping: true
+          })
+        : this.socket.emit('typing', {
+            room: this.room,
+            isTyping: false
+          })
     }
   },
   created() {
-    // this.getProducts()
+    if (!this.$route.params.username) {
+      this.$router.push('/')
+    }
+    this.username = this.$route.params.username
+    // console.log(this.$route.params);
+    this.socket.on('chatMessage', data => {
+      this.messages.push(data)
+    })
+    this.socket.on('typingMessage', data => {
+      this.typing = data
+    })
   },
   methods: {
-    ...mapActions(['getProducts']),
-    ...mapMutations([
-      'changePage',
-      'changeSort',
-      'changeCategory',
-      'searchProducts',
-      'getVoucher'
-    ]),
-    deleteProduct(item) {
-      axios
-        .delete(`http://localhost:3000/product/${item.product_id}`)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          this.getProduct()
-          this.$router.push('/')
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+    sendMessage() {
+      // const setData = {
+      //   username: this.username,
+      //   message: this.message
+      // };
+      // console.log(setData);
+      // this.socket.emit("globalMessage", setData);
+      // this.socket.emit("privateMessage", setData);
+      // this.socket.emit("broadcastMessage", setData);
+      // ===================
+      const setData = {
+        username: this.username,
+        message: this.message,
+        room: this.room
+      }
+      // [1] menjalankan socket io untuk mendapatkan realtimenya
+      this.socket.emit('roomMessage', setData)
+      // [2] menjalankan proses axios post data ke table chat
+      // this.postMessage(setData)
+      this.message = ''
     },
-    pacthProduct() {
-      console.log(this.form)
-    },
-    handlePageChange(numberPage) {
-      this.changePage(numberPage)
-      // console.log(numberPage)
-      // this.page = numberPage
-      this.getProducts()
-    },
-    productAbout(data) {
+    selectRoom(data) {
       console.log(data)
-      this.form = data
-      this.$router.push({
-        name: 'aboutProduct',
-        params: { id: data.product_id }
-      })
-    },
-    categoryFood(category) {
-      this.changeCategory(category)
-    },
-    handleSort(sort) {
-      this.changeSort(sort)
-      this.getProducts()
-    },
-
-    addProductform() {
-      this.$router.push({
-        name: 'addProduct'
-      })
-    },
-    searchProduct(search) {
-      this.searchProducts(search.target.value)
-      this.getProducts()
+      // [1] join room socket io
+      if (this.oldRoom) {
+        console.log('sudah pernah masuk ke room ' + this.oldRoom)
+        console.log('dan akan masuk ke room ' + data)
+        this.socket.emit('changeRoom', {
+          username: this.username,
+          room: data,
+          oldRoom: this.oldRoom
+        })
+        this.oldRoom = data
+      } else {
+        console.log('belum pernah masuk ke ruang manapun')
+        console.log('dan akan masuk ke room ' + data)
+        this.socket.emit('joinRoom', {
+          username: this.username,
+          room: data
+        })
+        // angkat telfon :( Nanti, ada apa?
+        // udah ada jawabannya buat ngambil data di local storage. mane lagi apa? urang ganggu?maaf :(
+        this.oldRoom = data
+      }
+      // [2] proses get data dari database dan akan menyimpan ke dalam variabel messages proses axios
     }
   }
 }
 </script>
 
 <style scoped>
-.centered {
-  text-align: center;
+.chat {
+  max-width: 600px;
+  border: 1px solid #ddd;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
 }
-.voucher-container {
+.room {
+  margin: 10px 0;
+}
+h2 {
+  font-size: 18px;
+  padding: 10px 20px;
+  color: #575ed8;
+}
+.mario-chat {
+  max-width: 600px;
+  margin: 30px auto;
+  border: 1px solid #ddd;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+.chat-window {
+  height: 400px;
+  overflow: auto;
+  background: #f9f9f9;
+}
+.output p {
+  text-align: left;
+  padding: 14px 0px;
+  margin: 0 20px;
+  border-bottom: 1px solid #e9e9e9;
+  color: #555;
+}
+.feedback p {
+  color: #aaa;
+  padding: 14px 0px;
+  margin: 0 20px;
+}
+.output strong {
+  color: #575ed8;
+}
+label {
   box-sizing: border-box;
-  border-right: 5px;
-}
-.card-product {
-  width: 160px;
-  height: 300.5px;
-  margin: 4%;
-  padding: 2%;
-  background: #ffffff;
-  box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
-  border-radius: 150px;
-}
-.card-title {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  text-align: center;
-  color: #000000;
-  font-style: normal;
-  font-size: 20px;
-}
-.rounded-circle {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10%;
+  padding: 10px 20px;
 }
-.card-title:hover {
-  color: brown;
-  font-weight: bold;
-  font-size: 20px;
+input {
+  padding: 10px 20px;
+  box-sizing: border-box;
+  background: #eee;
+  border: 0;
+  display: block;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  font-family: Nunito;
+  font-size: 16px;
 }
-.text-muted {
-  color: #6a4029;
-}
-.header-menu li {
-  margin-top: 1%;
-  margin-left: 5%;
-  font-family: Poppins;
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 24px;
-}
-.info-promo {
-  margin: 3%;
-  margin-left: 10%;
-
-  font-family: 'Source Serif Pro', serif;
-
-  padding-bottom: 4%;
-  color: #6a4029;
-  font-family: Rubik;
-
-  font-weight: bold;
-  font-size: 25px;
-  line-height: 30px;
-  /* identical to box height */
-
-  color: #6a4029;
-}
-.info-promo-1 {
-  margin: 5%;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 18px;
-  text-align: center;
-
-  color: #000000;
-}
-.voucher-container {
-  border-right: 5px solid #f7f7f7;
-  padding: 0px;
-  box-shadow: 0px 5px 5px #f7f7f7;
-}
-.add-product {
-  margin-left: 20%;
-  margin-top: 5%;
-  text-align: center;
-  width: 600px;
-  height: 70px;
-  border-radius: 20px;
-  background: #ffba33;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 30px;
-  /* identical to box height, or 120% */
-
-  text-align: center;
-
-  color: #6a4029;
-}
-.pagination {
-  margin-top: 5%;
-}
-@media only screen and (max-width: 1094px) {
-  .voucher-container {
-    display: none;
-  }
-  .bg-home {
-    margin-left: 25%;
-    margin-right: 25%;
-  }
-  .add-product {
-    margin-top: 5%;
-    text-align: center;
-    width: 300px;
-    height: 70px;
-    border-radius: 20px;
-    background: #ffba33;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-
-    /* identical to box height, or 120% */
-
-    text-align: center;
-
-    color: #6a4029;
-  }
-  .edit-data {
-    margin-left: 5px;
-  }
-}
-.add-voucher {
-  margin-top: 10%;
-  width: 300px;
-  height: 70px;
-  left: 156px;
-  top: 1110px;
-  border-radius: 20px;
-  background: #ffba33;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 30px;
+button {
+  background: #575ed8;
+  color: #fff;
+  font-size: 18px;
+  border: 0;
+  padding: 12px 0;
+  width: 100%;
+  border-radius: 0 0 2px 2px;
 }
 </style>

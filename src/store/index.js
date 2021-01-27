@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Auth from './modules/auth'
-import Product from './modules/product'
-import Voucher from './modules/voucher'
+import Profile from './modules/profile'
+import Friends from './modules/friends'
 import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { Auth, Product, Voucher },
+  modules: { Auth, Profile, Friends },
   state: {
     name: 'Milla aprillya indriyani'
   },
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   getters: {},
   plugins: [
     createPersistedState({
-      paths: ['Auth.user']
+      paths: ['Auth.user', 'friends']
     })
   ]
 })
