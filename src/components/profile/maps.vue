@@ -17,20 +17,20 @@
             icon="https://img.icons8.com/color/48/000000/map-pin.png"
           />
         </GmapMap>
-        <h3>{{ coordinate }}</h3>
       </div>
     </center>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Maps',
   data() {
     return {
       coordinate: {
-        lat: 10,
-        lng: 10
+        lat: 20,
+        lng: 20
       }
     }
   },
@@ -42,12 +42,17 @@ export default {
           lng: coordinates.lng
         }
         console.log(coordinates)
+        const updateLoc = { id: this.profile.user_id, updateData: coordinates }
+        if (this.coordinates < 300) {
+          this.patchUserProfile(updateLoc)
+        }
       })
       .catch(error => {
         alert(error)
       })
   },
   methods: {
+    ...mapActions(['patchUserProfile']),
     clickMarker(position) {
       console.log('clicked marker')
       console.log(position)
@@ -58,6 +63,9 @@ export default {
         lng: position.latLng.lng()
       }
     }
+  },
+  computed: {
+    ...mapGetters({ profile: 'setProfile', user: 'setUser' })
   }
 }
 </script>

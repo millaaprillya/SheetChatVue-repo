@@ -1,5 +1,13 @@
 <template>
   <div class="register">
+    <b-alert
+      show
+      variant="danger"
+      v-if="isError"
+      dismissible
+      @dismissed="closeAlert"
+      >{{ error }}</b-alert
+    >
     <b-row align-v="center" align-h="center">
       <b-col>
         <b-card border-variant="white">
@@ -177,8 +185,10 @@
 
 <script>
 import { mapActions } from 'vuex'
+import alert from '../../mixins/alert'
 export default {
   name: 'Register',
+  mixins: [alert],
   data: () => ({
     form: {
       user_name: '',
@@ -193,12 +203,17 @@ export default {
     onSubmit() {
       this.register(this.form)
         .then(result => {
-          console.log(result)
+          this.makeToast(
+            'Congratulations',
+            `${result} Login successfully`,
+            'success'
+          )
           this.$router.push('/login')
         })
         .catch(error => {
           this.isError = true
           this.error = error
+          this.makeToast('Failed', `${error}`, 'danger')
         })
     },
     closeAlert() {

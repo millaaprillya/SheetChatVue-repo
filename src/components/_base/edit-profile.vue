@@ -5,31 +5,43 @@
     </p>
     <div class="recent_heading">
       <center>
-        <img src="../../assets/Rectangle 8.png" alt="" />
-        <!-- <p class="user-name">{{ this.form.user_name }}</p> -->
-        <br />
-        <input type="text" v-model="profile.user_name" class="biodata" /><br />
-        <input type="text" v-model="profile.user_email" class="biodata" /><br />
+        <div>
+          <div>
+            <img
+              class="rounded-circle "
+              :src="`${url}/${profile.profileImage}`"
+              width="150"
+              height="150"
+            />
+          </div>
+          <label>
+            <input @change="handleFile" type="file" />
+          </label>
+        </div>
+
+        <div>
+          <input type="text" v-model="profile.user_name" class="biodata" />
+          <br />
+          <input type="text" v-model="profile.user_email" class="biodata" />
+        </div>
       </center>
       <p class="user-account">Account</p>
-      <!-- <p class="user-phone">{{ this.form.user_phone }}</p> -->
       <div>
-        <input type="text" v-model="profile.user_phone" class="biodata" /><br />
+        <input
+          type="number"
+          v-model="profile.user_phone"
+          class="biodata"
+        /><br />
       </div>
       <p class="change">Tap to change phone number</p>
     </div>
     <div>
-      <!-- <p class="user_email-1">{{ this.form.user_email }}</p> -->
-      <p class="user-phone">{{ form.user_name }}</p>
+      <p class="user-phone">{{ profile.user_name }}</p>
     </div>
     <div>
       <p class="user-phone">Bio</p>
       <input type="text" v-model="profile.user_bio" class="biodata" /><br />
       <br />
-      <p class="change">see my location</p>
-      <img src="../../assets/maps.png" class="img-maps" alt="" />
-      <input type="text" v-model="profile.user_lat" class="biodata" />
-      <input type="text" v-model="profile.user_lng" class="biodata" /><br />
     </div>
     <br />
     <div>
@@ -47,12 +59,16 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import alert from '../../mixins/alert'
 export default {
   name: 'Profile',
+  mixins: [alert],
   components: {},
   data() {
     return {
+      url: 'http://localhost:3000',
       form: {
+        profileImage: '',
         user_name: '',
         user_phone: '',
         user_email: '',
@@ -63,19 +79,25 @@ export default {
     }
   },
   created() {
-    // var data = localStorage.getItem('vuex')
-    // var get_id = JSON.parse(data).Auth.user.user_id
-    // this.form = this.getUserProfile(get_id)
     this.getUserProfile(this.user.user_id)
       .then(response => {
-        console.log(response)
+        const {
+          profileImage,
+          user_name,
+          user_phone,
+          user_email,
+          user_bio,
+          user_lat,
+          user_lng
+        } = response.data.data[0]
         this.form = {
-          user_name: response.user_name,
-          user_phone: response.user_phone,
-          user_email: response.user_email,
-          user_bio: response.user_bio,
-          user_lat: response.user_lat,
-          user_lng: response.user_lng
+          profileImage,
+          user_name,
+          user_phone,
+          user_email,
+          user_bio,
+          user_lat,
+          user_lng
         }
       })
       .catch(error => {
@@ -92,18 +114,59 @@ export default {
       'deleteProfilePict'
     ]),
     ...mapMutations(['patchUser']),
+    handleFile(event) {
+      if (event.target.files[0].size > 2000000) {
+        this.makeToast('Failed', `File too large`, 'danger')
+      } else {
+        console.log('file oke')
+        this.profile.profileImage = event.target.files[0]
+        const img = this.profile.profileImage
+        this.url = URL.createObjectURL(img)
+        const { profileImage } = this.profile
+        const data = new FormData()
+        data.append('profileImage', profileImage)
+        const pacthuserImg = { id: this.profile.user_id, image: data }
+        this.patchProfilePict(pacthuserImg)
+          .then(result => {
+            this.makeToast(
+              `Profile Image Updated`,
+              'Success update profile image',
+              'success'
+            )
+            this.getUserProfile(this.user.userId)
+            console.log(result)
+            console.log('berhasil patching')
+          })
+          .catch(error => {
+            this.makeToast('Failed', `Update Image Fail`, 'danger')
+            console.log(error)
+            console.log('error patching')
+          })
+      }
+    },
     updateProfile() {
-      console.log('connected to this function')
-      console.log(this.form)
-      this.form.user_name = this.profile.user_name
-      this.form.user_phone = this.profile.user_phone
-      this.form.user_email = this.profile.user_email
-      this.form.user_bio = this.profile.user_bio
-      this.form.user_lat = this.profile.user_lat
-      this.form.user_lng = this.profile.user_lng
-      this.patchUser(this.form)
-      this.patchUserProfile(this.user.user_id)
-      this.getUserProfile(this.user.user_id)
+      const data = new FormData()
+      data.append('user_name', this.profile.user_name)
+      data.append('use_phone', this.profile.user_phone)
+      data.append('user_email', this.profile.user_email)
+      data.append('user_bio', this.profile.user_bio)
+      data.append('user_lat', this.profile.user_lat)
+      data.append('user_lng', this.profile.user_lng)
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      const dataUser = { id: this.user.user_id, updateData: this.profile }
+      console.log(dataUser)
+      this.patchUserProfile(dataUser)
+        .then(response => {
+          console.log(response)
+          this.getUserProfile(this.user.user_id)
+          this.$router.push('/profile')
+        })
+        .catch(() => {
+          this.$router.push('/profile')
+        })
     }
   },
   computed: {

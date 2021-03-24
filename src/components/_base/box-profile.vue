@@ -19,16 +19,29 @@
           <b-dropdown-item v-b-modal.modal-search-friend
             >Invite friends</b-dropdown-item
           >
-          <b-dropdown-item href="#">Telegram FAQ</b-dropdown-item>
+          <b-dropdown-item href="#"> Settingss</b-dropdown-item>
+          <b-dropdown-item href="#" @click="logout">Logout</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
+
     <template>
       <b-container>
         <b-row class="bv-example-row">
           <b-col lg="2">
-            <div class="img">
-              <img src="../../assets/Rectangle 8.png" alt="" />
+            <div v-if="!profile.profileImage">
+              <img
+                src="../../assets/user.png"
+                class="rounded-circle "
+                height="50"
+              />
+            </div>
+            <div v-else>
+              <img
+                :src="`${url}/${profile.profileImage}`"
+                class="rounded-circle "
+                height="50"
+              />
             </div>
           </b-col>
           <b-col>
@@ -43,12 +56,11 @@
 
     <b-row class="searchadd">
       <b-col md="9">
-        <b-form-input placeholder="Type your message"></b-form-input>
-      </b-col>
-      <b-col md="3" align-self="center">
-        <b-button>
-          <b-img :src="require('../../assets/plus.png')"></b-img>
-        </b-button>
+        <b-form-input
+          placeholder="Search..."
+          v-model="search"
+          @keydown.enter.prevent="searching"
+        ></b-form-input>
       </b-col>
     </b-row>
     <div class="friend-chat">
@@ -60,22 +72,22 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      url: 'http://localhost:3000',
+      search: '',
       form: {
         user_name: '',
         user_phone: '',
         user_email: '',
-        user_bio: ''
+        user_bio: '',
+        profileImage: ''
       }
     }
   },
   created() {
-    // var data = localStorage.getItem('vuex')
-    // var get_id = JSON.parse(data).Auth.user.user_id
-    // this.form = this.getUserProfile(get_id)
     this.getUserProfile(this.user.user_id)
       .then(response => {
         console.log(response)
@@ -83,7 +95,8 @@ export default {
           user_name: response.user_name,
           user_phone: response.user_phone,
           user_email: response.user_email,
-          user_bio: response.user_bio
+          user_bio: response.user_bio,
+          profileImage: response.profileImage
         }
       })
       .catch(error => {
@@ -91,22 +104,39 @@ export default {
       })
   },
   methods: {
-    ...mapActions([
-      'getUserProfile',
-      'logout',
-      'patchUserProfile',
-      'patchLocation',
-      'patchProfilePict',
-      'deleteProfilePict'
-    ])
+    ...mapMutations(['setSearchedUser']),
+    ...mapActions(['getUserProfile', 'logout', 'getListRoom']),
+    searching() {
+      this.setSearchedUser(this.search)
+      const data = { id: this.user.user_id, searchUser: this.search }
+      this.getListRoom(data)
+    }
   },
   computed: {
-    ...mapGetters({ profile: 'getProfile', user: 'setUser' })
+    ...mapGetters({ profile: 'setProfile', user: 'setUser' })
   }
 }
 </script>
 >
 <style scoped>
+.teks {
+  margin-left: 4%;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: -0.165px;
+}
+.overflowTest {
+  background: #4caf50;
+  color: white;
+  padding: 15px;
+  width: 50%;
+  height: 100px;
+  overflow: scroll;
+  border: 1px solid #ccc;
+}
 .friend-chat {
   padding-left: 13%;
   align-content: center;

@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <b-row class="bv-example-row">
-      <b-col lg="2">
+      <b-col lg="1">
         <div class="img">
           <img src="../../assets/mamah.png" alt="" />
         </div>
@@ -16,7 +16,7 @@
   </b-container>
 </template>
 
-<style scoped></style>
+
 
 <style>
 .bv-example-row {

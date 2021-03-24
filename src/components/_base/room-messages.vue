@@ -74,6 +74,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {
+    showRoomMessage(item) {
+      console.log(item)
+    }
+  }
+}
+</script>
+
 <style>
 .txt-message {
   font-family: Rubik;

@@ -3,8 +3,10 @@ import axios from 'axios'
 export default {
   state: {
     profile: '',
+    roomId: '',
     form: {
       user_name: '',
+      profileImage: '',
       user_phone: '',
       user_email: '',
       user_bio: '',
@@ -14,7 +16,6 @@ export default {
   },
   mutations: {
     patchUser(context, payload) {
-      console.log(payload)
       context.form.user_name = payload.user_name
       context.form.user_phone = payload.user_phone
       context.form.user_email = payload.user_email
@@ -23,14 +24,18 @@ export default {
       context.form.user_lng = payload.user_lng
     },
     setUserProfile(state, payload) {
-      state.profile = payload
+      console.log(state)
+      state.form = payload
+    },
+    setRoomId(state, payload) {
+      state.roomId = payload
     }
   },
   actions: {
     getUserProfile(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://localhost:3000/user/${payload}`)
+          .get(`${process.env.VUE_APP_PORT}/user/${payload}`)
           .then(response => {
             context.commit('setUserProfile', response.data.data[0])
 
@@ -42,12 +47,16 @@ export default {
       })
     },
     patchUserProfile(context, payload) {
+      console.log(payload.updateData)
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://localhost:3000/user/${payload}`, context.state.form)
+          .patch(
+            `${process.env.VUE_APP_PORT}/user/${payload.id}`,
+            payload.updateData
+          )
           .then(response => {
             console.log(response.data.data)
-            // context.commit('setUserProfile', response.data.data)
+            context.commit('setUserProfile', response.data.data)
             resolve(response.data)
           })
           .catch(error => {
@@ -55,29 +64,30 @@ export default {
           })
       })
     },
-    // patchLocation(context, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .patch(
-    //         `http://localhost:3000/user/update/profile/user/update/location/${payload.user_id}`,
-    //         payload.user_data
-    //       )
-    //       .then(response => {
-    //         resolve(response.data.data)
-    //       })
-    //       .catch(error => {
-    //         reject(error.response)
-    //       })
-    //   })
-    // },
+    createRoom(context, payload) {
+      console.log(payload)
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${process.env.VUE_APP_PORT}/user/create`, payload)
+          .then(response => {
+            context.commit('setRoom', response.data.data)
+            resolve(response.data.data)
+          })
+          .catch(error => {
+            reject(error.response)
+          })
+      })
+    },
     patchProfilePict(context, payload) {
+      console.log(payload)
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://localhost:3000/user/update/image/${payload.user_id}`,
-            payload.user_data
+            `${process.env.VUE_APP_PORT}/user/img/${payload.id}`,
+            payload.image
           )
           .then(response => {
+            context.commit('setUserProfile', response.data.data)
             resolve(response.data.data)
           })
           .catch(error => {
@@ -88,7 +98,9 @@ export default {
     deleteProfilePict(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://localhost:3000/user/delete/image/${payload.user_id}`)
+          .patch(
+            `${process.env.VUE_APP_PORT}/user/delete/image/${payload.user_id}`
+          )
           .then(response => {
             resolve(response.data.data)
           })
@@ -104,7 +116,7 @@ export default {
     },
     setProfile(state) {
       console.log(state)
-      return state.profile
+      return state.form
     }
   }
 }

@@ -29,11 +29,11 @@ export default {
             // console.log(result)
             context.commit('setUser', result.data.data)
             localStorage.setItem('token', result.data.data.token)
-            resolve(result)
+            resolve(result.data.msg)
           })
           .catch(error => {
             console.log(error)
-            reject(error.response)
+            reject(error.response.data.msg)
           })
       })
     },
@@ -42,10 +42,10 @@ export default {
         axios
           .post('http://localhost:3000/user/register', payload)
           .then(response => {
-            resolve(response.data)
+            resolve(response.data.msg)
           })
           .catch(error => {
-            reject(error.response.data.message)
+            reject(error.response.data.msg)
           })
       })
     },

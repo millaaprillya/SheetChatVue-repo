@@ -129,8 +129,10 @@
 
 <script>
 import { mapActions } from 'vuex'
+import alert from '../../mixins/alert'
 export default {
   name: 'Login',
+  mixins: [alert],
   data: () => ({
     form: {
       user_email: '',
@@ -144,8 +146,8 @@ export default {
     onSubmit() {
       this.login(this.form)
         .then(result => {
-          console.log(result)
           this.$router.push('/')
+          this.successAlert(result)
         })
         .catch(error => {
           this.isError = true
