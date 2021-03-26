@@ -10,9 +10,17 @@
             v-for="(item, index) in listroom"
             :key="index"
           >
-            <div class="image_user">
+            <div class="image_user" v-if="item.profileImage">
               <img
                 :src="`${url}/${item.profileImage}`"
+                class="rounded-circle "
+                height="50"
+                width="50"
+              />
+            </div>
+            <div class="image_user" v-else>
+              <img
+                src="../../assets/user.png"
                 class="rounded-circle "
                 height="50"
                 width="50"
@@ -76,10 +84,18 @@
     <b-container v-else>
       <b-row class="bv-example-row">
         <b-col lg="1">
-          <div class="img">
+          <div class="img" v-if="friends.profileImage">
             <img
               :src="`${url}/${friends.profileImage}`"
-              alt="sunil"
+              alt=""
+              class="rounded-circle "
+              height="50"
+              width="50"
+            />
+          </div>
+          <div class="img" v-if="!friends.profileImage">
+            <img
+              src="../../assets/user.png"
               class="rounded-circle "
               height="50"
               width="50"
@@ -114,7 +130,7 @@
             <span class="time_date">{{ i.msg_created_at }}</span>
           </div>
         </div>
-        <div class="incoming_msg" v-if="i.receiver_id !== user.user_id">
+        <div class="incoming_msg" v-else>
           <div class="incoming_msg_img">
             <img
               :src="`${url}/${friends.profileImage}`"
@@ -156,8 +172,10 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import Box1 from '../../components/_base/box-profile'
+import moment from 'moment'
 
 export default {
   name: 'dashboard',
@@ -166,7 +184,11 @@ export default {
   },
   data() {
     return {
-      url: 'http://localhost:3000',
+      typing: {
+        isTyping: false
+      },
+      socket: io(`${process.env.VUE_APP_PORT}`),
+      url: `${process.env.VUE_APP_PORT}`,
       SendMessage: '',
       coordinate: { lat: 0, lng: 0 },
       search: '',
@@ -205,6 +227,19 @@ export default {
       this.postMessage(setData)
     },
     postMessage() {
+      var time = moment()
+        .format()
+        .slice(11, 16)
+      const data = {
+        room_id: this.friends.room_id,
+        senderImage: this.user.profileImage,
+        sender: this.user.user_id,
+        message: this.sendMessage,
+        receiverImage: this.friends.profileImage,
+        receiver_id: this.friends.receiver_id,
+        time: time
+      }
+      this.socket.emit('roomMessage', data)
       const setData = {
         room_id: this.friends.room_id,
         sender_id: this.user.user_id,
@@ -212,6 +247,8 @@ export default {
         message: this.SendMessage
       }
       this.sendMessage(setData)
+      this.SendMessage = ''
+      this.getChatRoom(this.user.user_id)
     }
   },
   computed: {

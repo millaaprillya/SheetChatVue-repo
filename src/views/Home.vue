@@ -132,8 +132,7 @@ export default {
           username: this.username,
           room: data
         })
-        // angkat telfon :( Nanti, ada apa?
-        // udah ada jawabannya buat ngambil data di local storage. mane lagi apa? urang ganggu?maaf :(
+
         this.oldRoom = data
       }
       // [2] proses get data dari database dan akan menyimpan ke dalam variabel messages proses axios

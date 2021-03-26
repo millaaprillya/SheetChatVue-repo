@@ -29,6 +29,7 @@ export default {
   },
   actions: {
     addFriend(context, payload) {
+      console.log(payload)
       return new Promise((resolve, reject) => {
         axios
           .post(`${process.env.VUE_APP_PORT}/user/addfriends`, payload)
