@@ -7,7 +7,7 @@
     <a href="https://github.com/millaaprillya/SheetChatVue-repo/pulls">Request Feature</a>
   </p>
 
-![Image Banner](https://github.com/millaaprillya/CoffeShopKu-Vue.js/blob/main/src/assets/property/readme.jpg)
+![Image Banner]()
 
 ## About The Project
 
