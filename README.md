@@ -46,5 +46,3 @@ VUE_APP_PORT = localhost:3000
 
 © [Milla Aprillya Indriyani](https://github.com/millaaprillya)
 
-JJJJ	
-GFYNG
